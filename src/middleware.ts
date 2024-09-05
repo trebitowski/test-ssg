@@ -26,6 +26,10 @@ export default async function middleware(req: NextRequest) {
     originalUrl.searchParams.get('slug') ?? originalUrl.pathname.split('/')[2];
   console.log('middleware', 'slug', slug);
 
+  if (!hostname || !slug) {
+    return NextResponse.redirect('https://feathery.io');
+  }
+
   const searchParams = new URLSearchParams(originalUrl.searchParams);
   console.log('middleware', 'searchParams: before', searchParams);
   searchParams.delete('slug');
