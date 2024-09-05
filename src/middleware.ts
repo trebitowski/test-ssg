@@ -21,9 +21,9 @@ export default async function middleware(req: NextRequest) {
   const hostname = originalUrl.hostname;
   console.log('middleware', 'hostname', hostname);
 
-  // slug can either be a path or a query param /to/[slug] or ?slug=[slug]
   const slug =
-    originalUrl.searchParams.get('slug') ?? originalUrl.pathname.split('/')[2];
+    originalUrl.searchParams.get('slug') ??
+    originalUrl.pathname.split('/to/').at(-1);
   console.log('middleware', 'slug', slug);
 
   if (!hostname || !slug) {
