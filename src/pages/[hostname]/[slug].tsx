@@ -7,7 +7,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   // generate no slugs at build, but cache them after first visit
   return {
     paths: [],
-    fallback: true
+    fallback: 'blocking'
   };
 };
 
@@ -16,6 +16,9 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
   const time = Date.now();
   const { hostname, slug } = params;
+  console.log('getStaticProps', 'hostname', hostname);
+  console.log('getStaticProps', 'slug', slug);
+  console.log('getStaticProps', 'time', time);
 
   const redirect = checkForHostRedirect(hostname as string);
   if (redirect) return redirect;

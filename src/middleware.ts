@@ -16,10 +16,10 @@ export const config = {
  */
 export default async function middleware(req: NextRequest) {
   const originalUrl = req.nextUrl;
-  console.log('middleware', 'originalUrl', originalUrl);
 
   const hostname = req.headers.get('host');
   console.log('middleware', 'hostname', hostname);
+  console.log('middleware', 'real hostname', req.headers.get('hostname'));
 
   const slug =
     originalUrl.searchParams.get('slug') ??
@@ -33,13 +33,8 @@ export default async function middleware(req: NextRequest) {
   const currentHost = hostname;
 
   const searchParams = new URLSearchParams(originalUrl.searchParams);
-  console.log('middleware', 'searchParams: before', searchParams);
-  searchParams.delete('slug');
-  searchParams.delete('hostname');
-  console.log('middleware', 'searchParams: after', searchParams);
   const searchParamsPath =
     searchParams.toString().length > 0 ? `?${searchParams}` : '';
-  console.log('middleware', 'searchParamsPath', searchParamsPath);
 
   const newPath = `/${currentHost}/${slug}${searchParamsPath}`;
   console.log('middleware', 'newPath', newPath);
