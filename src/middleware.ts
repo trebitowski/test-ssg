@@ -33,8 +33,13 @@ export default async function middleware(req: NextRequest) {
     originalUrl.searchParams.get('slug') ?? originalUrl.pathname.split('/')[2];
   console.log('middleware', 'slug', slug);
 
-  const searchParams = originalUrl.searchParams.toString();
-  const searchParamsPath = searchParams.length > 0 ? `?${searchParams}` : '';
+  const searchParams = new URLSearchParams(originalUrl.searchParams);
+  console.log('middleware', 'searchParams: before', searchParams);
+  searchParams.delete('slug');
+  searchParams.delete('hostname');
+  console.log('middleware', 'searchParams: after', searchParams);
+  const searchParamsPath =
+    searchParams.toString().length > 0 ? `?${searchParams}` : '';
   console.log('middleware', 'searchParamsPath', searchParamsPath);
 
   const newPath = `/${hostname}/to/${slug}${searchParamsPath}`;
