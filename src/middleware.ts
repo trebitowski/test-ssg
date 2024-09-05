@@ -7,7 +7,7 @@ export const config = {
      * 2. /to/[slug]
      */
     '/',
-    '/to/:slug*'
+    '/to/:slug'
   ]
 };
 
