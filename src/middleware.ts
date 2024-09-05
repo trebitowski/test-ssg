@@ -19,7 +19,6 @@ export default async function middleware(req: NextRequest) {
 
   const hostname = req.headers.get('host');
   console.log('middleware', 'hostname', hostname);
-  console.log('middleware', 'real hostname', req.headers.get('hostname'));
 
   const slug =
     originalUrl.searchParams.get('slug') ??
@@ -30,13 +29,13 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect('https://feathery.io');
   }
 
-  const currentHost = hostname;
+  const site = hostname;
 
   const searchParams = new URLSearchParams(originalUrl.searchParams);
   const searchParamsPath =
     searchParams.toString().length > 0 ? `?${searchParams}` : '';
 
-  const newPath = `/${currentHost}/${slug}${searchParamsPath}`;
+  const newPath = `/_forms/${site}/${slug}${searchParamsPath}`;
   console.log('middleware', 'newPath', newPath);
   console.log('middleware', 'newUrl', new URL(newPath, req.url));
   return NextResponse.rewrite(new URL(newPath, req.url));

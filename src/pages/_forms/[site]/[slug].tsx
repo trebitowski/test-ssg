@@ -15,15 +15,15 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   if (!params) throw new Error('No path parameters found');
 
   const time = Date.now();
-  const { hostname, slug } = params;
-  console.log('getStaticProps', 'hostname', hostname);
+  const { site, slug } = params;
+  console.log('getStaticProps', 'site', site);
   console.log('getStaticProps', 'slug', slug);
   console.log('getStaticProps', 'time', time);
 
-  const redirect = checkForHostRedirect(hostname as string);
+  const redirect = checkForHostRedirect(site as string);
   if (redirect) return redirect;
 
-  return { props: { slug, hostname, time } as Props };
+  return { props: { slug, site, time } as Props };
 };
 
 export default FeatheryTestPage;
