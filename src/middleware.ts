@@ -47,9 +47,8 @@ export default async function middleware(req: NextRequest) {
 }
 
 function extractDomain(req: NextRequest): string {
-  const protocol = req.headers.get('x-forwarded-proto') || 'http';
   const hostname = req.headers.get('host');
-  return hostname ? `${protocol}://${hostname}` : '';
+  return hostname ?? '';
 }
 function extractSearchParams(req: NextRequest): string {
   const searchParams = new URLSearchParams(req.nextUrl.searchParams);
