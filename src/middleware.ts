@@ -6,10 +6,24 @@ export const config = {
 
 export default function middleware(req: NextRequest) {
   const url = req.nextUrl;
-  const hostname = req.nextUrl.host;
+  const hostname = url.host;
+
+  // Check if this request has already been processed by the middleware
+  if (url.pathname.startsWith('/_forms/')) {
+    return NextResponse.next();
+  }
+
   const slug = extractSlug(url);
 
+  console.log('Middleware Execution:');
+  console.log('  URL:', url.toString());
+  console.log('  Hostname:', hostname);
+  console.log('  Pathname:', url.pathname);
+  console.log('  Search Params:', url.searchParams.toString());
+  console.log('  Extracted Slug:', slug);
+
   if (!slug) {
+    console.log('  Action: Redirecting to Google');
     return NextResponse.redirect('https://google.com');
   }
 
