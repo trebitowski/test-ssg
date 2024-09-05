@@ -11,7 +11,7 @@ export type Props = {
 export default function FeatheryTestPage({ host, panelSlug, time }: Props) {
   const router = useRouter();
   const parsedQueryParams = parseQueryParams(router.query);
-  const { region } = getRegionMeta(host);
+  const { region, apiUrl } = getRegionMeta(host);
 
   return (
     <>
@@ -21,6 +21,8 @@ export default function FeatheryTestPage({ host, panelSlug, time }: Props) {
         <p>Host: {host}</p>
         <p>Slug: {panelSlug}</p>
         <p>Region: {region}</p>
+        <p>API: {apiUrl}</p>
+        <p>Params:</p>
         <pre>{JSON.stringify(parsedQueryParams, null, 2)}</pre>
       </div>
     </>

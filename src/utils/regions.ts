@@ -4,20 +4,17 @@ const EU = 'eu';
 const US = 'us';
 
 const hostRegionMap = {
-  'haleoclinic.feathery.io': CA,
-  'cashcofinancial.feathery.io': CA,
-  'weel.feathery.io': AUSTRALIA,
-  'umlautsolutions.feathery.io': AUSTRALIA,
-  'sympatient.feathery.io': EU,
-  'eu-customsubdomain.feathery.io': EU, // test org 'eu-customsubdomain'
-  'au-customsubdomain.feathery.io': AUSTRALIA // test org 'au-customsubdomain'
+  'ca.trebitowski.com': CA,
+  'au.trebitowski.com': AUSTRALIA,
+  'eu.trebitowski.com': EU,
+  'us.trebitowski.com': US
 } as Record<string, string>;
 
 const apiRegionMap = {
-  [CA]: 'https://api-ca.feathery.io',
-  [AUSTRALIA]: 'https://api-au.feathery.io',
-  [EU]: 'https://api-eu.feathery.io',
-  [US]: 'https://api.feathery.io',
+  [CA]: 'https://api-ca.trebitowski.com',
+  [AUSTRALIA]: 'https://api-au.trebitowski.com',
+  [EU]: 'https://api-eu.trebitowski.com',
+  [US]: 'https://api.trebitowski.com'
 } as Record<string, string>;
 
 export function getRegionMeta(host: string) {

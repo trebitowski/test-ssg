@@ -16,7 +16,10 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
   const time = Date.now();
 
-  const host = (params?.hostname as string) || '';
+  let host = params?.hostname || '';
+  if (Array.isArray(host)) {
+    host = host[0];
+  }
 
   const redirect = checkForHostRedirect(host);
   if (redirect) return redirect;
