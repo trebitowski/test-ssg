@@ -18,6 +18,7 @@ const apiRegionMap = {
 } as Record<string, string>;
 
 export function getRegionMeta(host: string) {
+  // default to US if host is not in hostRegionMap
   const region = hostRegionMap[host] ?? US;
   const apiUrl = apiRegionMap[region];
   return { region, apiUrl };

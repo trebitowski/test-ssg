@@ -1,4 +1,3 @@
-import parseQueryParams from '@/utils/queryParams';
 import { useRouter } from 'next/router';
 import { getRegionMeta } from '@/utils/regions';
 
@@ -8,9 +7,9 @@ export type Props = {
   time: number;
 };
 
-export default function FeatheryTestPage({ site, slug, time }: Props) {
+export default function TestPage({ site, slug, time }: Props) {
   const router = useRouter();
-  const parsedQueryParams = parseQueryParams(router.query);
+  const queryParams = router.query;
   const { region, apiUrl } = getRegionMeta(site);
 
   return (
@@ -23,7 +22,7 @@ export default function FeatheryTestPage({ site, slug, time }: Props) {
         <p>Region: {region}</p>
         <p>API: {apiUrl}</p>
         <p>Params:</p>
-        <pre>{JSON.stringify(parsedQueryParams, null, 2)}</pre>
+        <pre>{JSON.stringify(queryParams, null, 2)}</pre>
       </div>
     </>
   );

@@ -1,5 +1,4 @@
-import { checkForHostRedirect } from '@/utils/helpers';
-import FeatheryTestPage, { Props } from '@/components/FeatheryTestPage';
+import TestPage, { Props } from '@/components/TestPage';
 
 import type { GetStaticProps, GetStaticPaths } from 'next';
 
@@ -20,10 +19,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   console.log('getStaticProps', 'slug', slug);
   console.log('getStaticProps', 'time', time);
 
-  const redirect = checkForHostRedirect(site as string);
-  if (redirect) return redirect;
-
   return { props: { slug, site, time } as Props };
 };
 
-export default FeatheryTestPage;
+export default TestPage;

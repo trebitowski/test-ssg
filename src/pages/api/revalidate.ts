@@ -39,7 +39,7 @@ export default async function handler(
     const pages = [];
     for (const domain of domains) {
       for (const slug of slugs) {
-        pages.push(`${domain}/to/${slug}`);
+        pages.push(`/_forms/${domain}/${slug}`);
       }
     }
 

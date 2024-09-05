@@ -1,42 +1,55 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export const config = {
-  matcher: ['/', '/to/:slug']
+  matcher: ['/', '/to/:slug+']
 };
 
-/**
- * Middleware that rewrites the following URLs to add a hostname path:
- *   - /to/[slug]
- *   - /?slug=[slug]
- * To:
- *   - /[hostname]/to/[slug]
- * Useful for hosting multiple sites on the same domain.
- *
- * Note: The user sees the original url, since this is a rewritten url, not a redirect.
- */
 export default async function middleware(req: NextRequest) {
-  const originalUrl = req.nextUrl;
-
-  const hostname = req.headers.get('host');
-  console.log('middleware', 'hostname', hostname);
-
-  const slug =
-    originalUrl.searchParams.get('slug') ??
-    originalUrl.pathname.split('/to/').splice(1).join('/to/');
+  const domain = extractDomain(req);
+  const slug = extractSlug(req);
+  console.log('middleware', 'domain', domain);
   console.log('middleware', 'slug', slug);
 
-  if (!hostname || !slug) {
-    return NextResponse.redirect('https://feathery.io');
+  if (!slug) {
+    return NextResponse.redirect('https://google.com');
   }
 
-  const site = hostname;
+  const searchParams = extractSearchParams(req);
+  const path = `/_forms/${domain}/${slug}${searchParams}`;
+  const newUrl = new URL(path, req.url);
 
-  const searchParams = new URLSearchParams(originalUrl.searchParams);
-  const searchParamsPath =
-    searchParams.toString().length > 0 ? `?${searchParams}` : '';
+  newUrl.searchParams.delete('site');
+  newUrl.searchParams.delete('slug');
 
-  const newPath = `/_forms/${site}/${slug}${searchParamsPath}`;
-  console.log('middleware', 'newPath', newPath);
-  console.log('middleware', 'newUrl', new URL(newPath, req.url));
-  return NextResponse.rewrite(new URL(newPath, req.url));
+  console.log('middleware', 'path', path);
+  console.log('middleware', 'newUrl', newUrl);
+  console.log('middleware', 'compare', newUrl.href, req.url);
+
+  // prevent unnecessary rewrites
+  if (newUrl.href === req.url) {
+    return NextResponse.next();
+  }
+
+  return NextResponse.rewrite(newUrl);
+}
+
+function extractDomain(req: NextRequest): string {
+  const hostname = req.headers.get('host');
+  return hostname ? `${hostname}` : '';
+}
+function extractSearchParams(req: NextRequest): string {
+  const searchParams = new URLSearchParams(req.nextUrl.searchParams);
+  searchParams.delete('slug');
+  searchParams.delete('site');
+  const searchString = searchParams.toString();
+  return searchString ? `?${searchString}` : '';
+}
+
+function extractSlug(req: NextRequest): string {
+  // extract slug from query params
+  const querySlug = req.nextUrl.searchParams.get('slug');
+  // extract slug from path `/to/:slug`
+  const pathSlug = req.nextUrl.pathname.split('/to/').splice(1).join('/to/');
+
+  return querySlug ?? pathSlug;
 }
