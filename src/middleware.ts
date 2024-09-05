@@ -38,5 +38,6 @@ export default async function middleware(req: NextRequest) {
 
   const newPath = `/${currentHost}/${slug}${searchParamsPath}`;
   console.log('middleware', 'newPath', newPath);
-  return NextResponse.rewrite(new URL(newPath, req.url));
+  console.log('middleware', 'newUrl', new URL(newPath, req.url));
+  return NextResponse.redirect(new URL(newPath, req.url));
 }
