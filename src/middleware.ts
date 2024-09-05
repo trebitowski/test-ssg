@@ -23,7 +23,7 @@ export default async function middleware(req: NextRequest) {
 
   const slug =
     originalUrl.searchParams.get('slug') ??
-    originalUrl.pathname.split('/to/').at(-1);
+    originalUrl.pathname.split('/to/').at(1);
   console.log('middleware', 'slug', slug);
 
   if (!hostname || !slug) {
