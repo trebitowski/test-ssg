@@ -6,15 +6,14 @@ export const config = {
 
 export default function middleware(req: NextRequest) {
   const url = req.nextUrl;
-  // get hostname from request
-  const hostname = url.host;
+  const hostname = req.headers.get('host') || '';
   const slug = extractSlug(url);
 
   if (!slug) {
     return NextResponse.redirect('https://google.com');
   }
 
-  // Construct the new path without adding query parameters
+  // Construct the new path including the hostname as the site parameter
   const newPath = `/_forms/${hostname}/${slug}`;
 
   // Create a new URL for the rewrite, maintaining the original URL's protocol and host
@@ -23,16 +22,11 @@ export default function middleware(req: NextRequest) {
   console.log('Middleware - Original URL:', url.toString());
   console.log('Middleware - Rewrite URL:', rewriteUrl.toString());
 
-  // Only rewrite if the path has changed
-  if (rewriteUrl.pathname !== url.pathname) {
-    return NextResponse.rewrite(rewriteUrl);
-  }
-
-  return NextResponse.next();
+  // Always rewrite to the new URL
+  return NextResponse.rewrite(rewriteUrl);
 }
 
 function extractSlug(url: URL): string {
-  const querySlug = url.searchParams.get('slug');
-  const pathSlug = url.pathname.split('/to/').at(1);
-  return querySlug ?? pathSlug ?? '';
+  const pathParts = url.pathname.split('/to/');
+  return pathParts.length > 1 ? pathParts[1] : '';
 }
