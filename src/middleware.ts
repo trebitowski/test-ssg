@@ -1,14 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export const config = {
-  matcher: [
-    /*
-     * 1. index page
-     * 2. /to/[slug]
-     */
-    '/',
-    '/to/:slug'
-  ]
+  matcher: ['/((?!api/|_next/|_static/|_vercel|[\\w-]+\\.\\w+).*)']
 };
 
 /**
