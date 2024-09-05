@@ -1,68 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export const config = {
-  matcher: ['/', '/to/:slug*']
+  matcher: ['/', '/to/:path*']
 };
 
-export default async function middleware(req: NextRequest) {
-  console.log('Original query params:', req.nextUrl.searchParams.toString());
-  console.log('Original URL:', req.url);
-  console.log('Pathname:', req.nextUrl.pathname);
-  console.log('Search Params:', req.nextUrl.searchParams.toString());
-  console.log(
-    'Headers:',
-    JSON.stringify(Object.fromEntries(req.headers), null, 2)
-  );
-
-  const domain = extractDomain(req);
-  const slug = extractSlug(req);
-  console.log('middleware', 'domain', domain);
-  console.log('middleware', 'slug', slug);
+export default function middleware(req: NextRequest) {
+  const url = req.nextUrl;
+  // get hostname from request
+  const hostname = url.host;
+  const slug = extractSlug(url);
 
   if (!slug) {
     return NextResponse.redirect('https://google.com');
   }
 
-  const searchParams = extractSearchParams(req);
-  const path = `/_forms/${domain}/${slug}${searchParams}`;
-  const newUrl = new URL(path, req.url);
+  // Construct the new path without adding query parameters
+  const newPath = `/_forms/${hostname}/${slug}`;
 
-  newUrl.searchParams.delete('site');
-  newUrl.searchParams.delete('slug');
+  // Create a new URL for the rewrite, maintaining the original URL's protocol and host
+  const rewriteUrl = new URL(newPath, url.origin);
 
-  console.log('middleware', 'path', path);
-  console.log('middleware', 'newUrl', newUrl);
-  console.log('middleware', 'compare', newUrl.href, req.url);
+  console.log('Middleware - Original URL:', url.toString());
+  console.log('Middleware - Rewrite URL:', rewriteUrl.toString());
 
-  // prevent unnecessary rewrites
-  if (newUrl.href === req.url) {
-    return NextResponse.next();
+  // Only rewrite if the path has changed
+  if (rewriteUrl.pathname !== url.pathname) {
+    return NextResponse.rewrite(rewriteUrl);
   }
 
-  return NextResponse.rewrite(new URL(path, req.url), {
-    request: {
-      headers: req.headers
-    }
-  });
+  return NextResponse.next();
 }
 
-function extractDomain(req: NextRequest): string {
-  const hostname = req.headers.get('host');
-  return hostname ?? '';
-}
-function extractSearchParams(req: NextRequest): string {
-  const searchParams = new URLSearchParams(req.nextUrl.searchParams);
-  searchParams.delete('slug');
-  searchParams.delete('site');
-  const searchString = searchParams.toString();
-  return searchString ? `?${searchString}` : '';
-}
-
-function extractSlug(req: NextRequest): string {
-  // extract slug from query params
-  const querySlug = req.nextUrl.searchParams.get('slug');
-  // extract slug from path `/to/:path*`
-  const pathSlug = req.nextUrl.pathname.split('/to/')[1];
-
+function extractSlug(url: URL): string {
+  const querySlug = url.searchParams.get('slug');
+  const pathSlug = url.pathname.split('/to/').at(1);
   return querySlug ?? pathSlug ?? '';
 }
