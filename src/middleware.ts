@@ -6,7 +6,7 @@ export const config = {
 
 export default function middleware(req: NextRequest) {
   const url = req.nextUrl;
-  const hostname = req.headers.get('host') || '';
+  const hostname = req.nextUrl.host;
   const slug = extractSlug(url);
 
   if (!slug) {
@@ -27,6 +27,7 @@ export default function middleware(req: NextRequest) {
 }
 
 function extractSlug(url: URL): string {
-  const pathParts = url.pathname.split('/to/');
-  return pathParts.length > 1 ? pathParts[1] : '';
+  const querySlug = url.searchParams.get('slug');
+  const pathSlug = url.pathname.split('/to/').at(1);
+  return querySlug ?? pathSlug ?? '';
 }
