@@ -23,6 +23,7 @@ export const config = {
  */
 export default async function middleware(req: NextRequest) {
   const originalUrl = req.nextUrl;
+  console.log('middleware', 'originalUrl', originalUrl);
 
   const hostname = originalUrl.hostname;
   console.log('middleware', 'hostname', hostname);
