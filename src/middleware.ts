@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export const config = {
-  matcher: ['/((?!api/|_next/|_static/|_vercel|[\\w-]+\\.\\w+).*)']
+  matcher: ['/', '/to/:slug']
 };
 
 /**
@@ -39,5 +39,5 @@ export default async function middleware(req: NextRequest) {
   const newPath = `/${currentHost}/${slug}${searchParamsPath}`;
   console.log('middleware', 'newPath', newPath);
   console.log('middleware', 'newUrl', new URL(newPath, req.url));
-  return NextResponse.redirect(new URL(newPath, req.url));
+  return NextResponse.rewrite(new URL(newPath, req.url));
 }
