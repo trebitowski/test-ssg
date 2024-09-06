@@ -614,6 +614,11 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@netlify/edge-functions@^2.10.0":
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/@netlify/edge-functions/-/edge-functions-2.10.0.tgz#2fe7550712155d1711f019a8d280a0afeb3e29d9"
+  integrity sha512-toDBus02KyXTeErqXh9mFjH5ocGwSDO8w9q1TkSincqExtm8TMITg3iXr4/SPKE17nKt+olsEuIry5hyM8OJBQ==
+
 "@next/env@13.4.8":
   version "13.4.8"
   resolved "https://registry.npmjs.org/@next/env/-/env-13.4.8.tgz"
@@ -1371,6 +1376,11 @@ caniuse-lite@^1.0.30001646:
   version "1.0.30001657"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001657.tgz#29fd504bffca719d1c6b63a1f6f840be1973a660"
   integrity sha512-DPbJAlP8/BAXy3IgiWmZKItubb3TYGP0WscQQlVGIfT4s/YlFYVuJgyOsQNP7rJRChx/qdMeLJQJP0Sgg2yjNA==
+
+cdn-cache-control@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/cdn-cache-control/-/cdn-cache-control-1.1.0.tgz#ceb3453083951d8f9e4f83452257fec792faeeab"
+  integrity sha512-VXI9MvU/PzlH/PVxniZguD/1GUPJl6PjwNsucMOA0I6Jl4OAAVsn0kNxnGG27cp6lGConsSlpPb4PtOf1T5SxQ==
 
 chalk@^2.4.2:
   version "2.4.2"

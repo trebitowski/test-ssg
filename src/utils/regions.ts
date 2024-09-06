@@ -17,9 +17,17 @@ const apiRegionMap = {
   [US]: 'https://api.trebitowski.com'
 } as Record<string, string>;
 
+const originRegionMap = {
+  [CA]: 'https://ca.trebitowski.com',
+  [AUSTRALIA]: 'https://au.trebitowski.com',
+  [EU]: 'https://eu.trebitowski.com',
+  [US]: 'https://us.trebitowski.com'
+} as Record<string, string>;
+
 export function getRegionMeta(host: string) {
   // default to US if host is not in hostRegionMap
   const region = hostRegionMap[host] ?? US;
   const apiUrl = apiRegionMap[region];
-  return { region, apiUrl };
+  const origin = originRegionMap[region];
+  return { region, apiUrl, origin };
 }

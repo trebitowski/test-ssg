@@ -1,7 +1,15 @@
-export default async function subdomainRewrite(request: Request) {
+import { getRegionMeta } from '@/utils/regions';
+import type { Config, Context } from '@netlify/edge-functions';
+import { CacheHeaders } from 'cdn-cache-control';
+
+export default async function subdomainRewrite(
+  request: Request,
+  context: Context
+) {
   const url = new URL(request.url);
   const hostname = url.hostname;
-  const slug = extractSlug(url);
+  const slug = context.params.slug ?? url.searchParams.get('slug');
+  const { origin } = getRegionMeta(hostname);
 
   console.log('Edge Function Execution:');
   console.log('  Request URL:', request.url);
@@ -9,6 +17,8 @@ export default async function subdomainRewrite(request: Request) {
   console.log('  Pathname:', url.pathname);
   console.log('  Search Params:', url.searchParams.toString());
   console.log('  Extracted Slug:', slug);
+  const headers = new CacheHeaders().tag(hostname, `${hostname}-${slug}`);
+  console.log('  Headers:', headers);
 
   if (!slug) {
     console.log('  Action: Redirecting to Google');
@@ -16,19 +26,13 @@ export default async function subdomainRewrite(request: Request) {
   }
 
   // Construct the new path including the hostname as the site parameter
-  const newPath = `/_forms/${hostname}/${slug}`;
-  const newUrl = new URL(newPath, request.url);
-  console.log('  Rewritten URL:', newUrl);
+  const newPath = `https://${origin}/_forms/${hostname}/${slug}`;
+  const newUrl = new URL(newPath, url);
+  console.log('  Rewritten URL:', newUrl.href);
 
   return newUrl;
 }
 
-function extractSlug(url: URL): string {
-  const querySlug = url.searchParams.get('slug');
-  const pathSlug = url.pathname.split('/to/').at(1);
-  return querySlug ?? pathSlug ?? '';
-}
-
 export const config = {
-  path: ['/to/*', '/']
-};
+  path: ['/to/:slug', '/']
+} satisfies Config;
