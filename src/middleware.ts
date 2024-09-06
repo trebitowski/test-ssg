@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export const config = {
   matcher: [
     {
-      source: '/to/:path*',
+      source: '/to/:path',
       missing: [
         { type: 'query', key: 'slug' },
         { type: 'query', key: 'site' }
@@ -19,12 +19,6 @@ export const config = {
 export default function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
   const hostname = url.host;
-
-  // Check if this request has already been processed by the middleware
-  if (url.pathname.startsWith('/_forms/')) {
-    return NextResponse.next();
-  }
-
   const slug = extractSlug(url);
 
   console.log('Middleware Execution:');
@@ -49,7 +43,12 @@ export default function middleware(req: NextRequest) {
   console.log('Middleware - Rewrite URL:', url.toString());
 
   // Always rewrite to the new URL
-  return NextResponse.rewrite(url);
+  const response = NextResponse.rewrite(url);
+  //disable cache and pray
+  response.headers.set('Cache-Control', 'no-store');
+  response.headers.set('Pragma', 'no-cache');
+  response.headers.set('Expires', '0');
+  return response;
 }
 
 function extractSlug(url: URL): string {

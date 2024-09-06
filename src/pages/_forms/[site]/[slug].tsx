@@ -6,7 +6,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   // generate no slugs at build, but cache them after first visit
   return {
     paths: [],
-    fallback: 'blocking'
+    fallback: true
   };
 };
 
