@@ -5,7 +5,7 @@ export const config = {
 };
 
 export default function middleware(req: NextRequest) {
-  const url = req.nextUrl;
+  const url = req.nextUrl.clone();
   const hostname = url.host;
 
   // Check if this request has already been processed by the middleware
@@ -30,14 +30,17 @@ export default function middleware(req: NextRequest) {
   // Construct the new path including the hostname as the site parameter
   const newPath = `/_forms/${hostname}/${slug}`;
 
-  // Create a new URL for the rewrite, maintaining the original URL's protocol and host
-  const rewriteUrl = new URL(newPath, url.origin);
+  url.search = '';
+  url.pathname = newPath;
 
-  console.log('Middleware - Original URL:', url.toString());
-  console.log('Middleware - Rewrite URL:', rewriteUrl.toString());
+  // Create a new URL for the rewrite, maintaining the original URL's protocol and host
+  // const rewriteUrl = new URL(newPath, url.origin);
+
+  // console.log('Middleware - Original URL:', url.toString());
+  // console.log('Middleware - Rewrite URL:', rewriteUrl.toString());
 
   // Always rewrite to the new URL
-  return NextResponse.rewrite(rewriteUrl);
+  return NextResponse.rewrite(url);
 }
 
 function extractSlug(url: URL): string {
