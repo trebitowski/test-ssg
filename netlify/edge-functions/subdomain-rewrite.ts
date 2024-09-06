@@ -24,7 +24,7 @@ export default async function subdomainRewrite(
     return Response.redirect('https://google.com', 302);
   }
 
-  const newPath = `https://${origin}/_forms/${hostname}/${slug}`;
+  const newPath = `${origin}/_forms/${hostname}/${slug}`;
   const newUrl = new URL(newPath, url);
   console.log('  Rewritten URL:', newUrl.href);
 
