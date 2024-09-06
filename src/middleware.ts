@@ -1,7 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export const config = {
-  matcher: ['/', '/to/:path*']
+  matcher: [
+    {
+      source: '/to/:path*',
+      missing: [
+        { type: 'query', key: 'slug' },
+        { type: 'query', key: 'site' }
+      ]
+    },
+    {
+      source: '/',
+      missing: [{ type: 'query', key: 'site' }]
+    }
+  ]
 };
 
 export default function middleware(req: NextRequest) {
@@ -30,14 +42,11 @@ export default function middleware(req: NextRequest) {
   // Construct the new path including the hostname as the site parameter
   const newPath = `/_forms/${hostname}/${slug}`;
 
+  console.log('Middleware - Original URL:', url.toString());
   url.search = '';
   url.pathname = newPath;
 
-  // Create a new URL for the rewrite, maintaining the original URL's protocol and host
-  // const rewriteUrl = new URL(newPath, url.origin);
-
-  // console.log('Middleware - Original URL:', url.toString());
-  // console.log('Middleware - Rewrite URL:', rewriteUrl.toString());
+  console.log('Middleware - Rewrite URL:', url.toString());
 
   // Always rewrite to the new URL
   return NextResponse.rewrite(url);
