@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export const config = {
   matcher: [
     {
-      source: '/to/:path',
+      source: '/to/:path*',
       missing: [
         { type: 'query', key: 'slug' },
         { type: 'query', key: 'site' }
