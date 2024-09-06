@@ -7,7 +7,7 @@ import { NextURL } from 'next/dist/server/web/next-url';
 // @next/next/no-server-import-in-page
 import { NextRequest } from 'next/server';
 import { instance, mock, reset, when } from 'ts-mockito';
-import middleware from './middleware';
+import middleware from './_delete_middleware';
 
 const mockedRequest: NextRequest = mock(NextRequest);
 
