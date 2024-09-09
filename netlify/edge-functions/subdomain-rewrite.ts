@@ -23,7 +23,7 @@ export default async function subdomainRewrite(
     return Response.redirect('https://google.com', 302);
   }
 
-  const newPath = `${hostname}/_forms/${hostname}/${slug}`;
+  const newPath = `/_forms/${hostname}/${slug}`;
   const newUrl = new URL(newPath, url);
   console.log('  Rewritten URL:', newUrl.href);
 

@@ -3,9 +3,7 @@ import TestPage, { Props } from '@/components/TestPage';
 import type { GetServerSideProps } from 'next';
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({
-  req,
-  params,
-  query
+  params
 }) => {
   const time = Date.now();
   const site = params?.site as string;
