@@ -1,7 +1,9 @@
+import type { Metadata, ResolvingMetadata } from 'next';
 import { revalidateTag } from 'next/cache';
 
-export const metadata = {
-  title: 'On-Demand Revalidation'
+type Props = {
+  params: { site: string; slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 };
 
 const tagName = 'randomWiki';
@@ -9,15 +11,31 @@ const randomWikiUrl =
   'https://en.wikipedia.org/api/rest_v1/page/random/summary';
 const maxExtractLength = 200;
 
-export default async function Page() {
+export const dynamic = 'force-static';
+export const dynamicParams = true;
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const slug = params.slug;
+
+  return {
+    title: slug
+  };
+}
+
+export default async function Page({ params }: Props) {
   async function revalidateWiki() {
     'use server';
     revalidateTag(tagName);
   }
 
+  const time = Date.now();
+
   return (
     <>
-      <h1>Revalidation Basics</h1>
+      <h1>Revalidation</h1>
+      <p>Site: {params.site}</p>
+      <p>Slug: {params.slug}</p>
+      <p>Generated: {new Date(time).toLocaleTimeString()}</p>
       <form className='mt-4' action={revalidateWiki}>
         <button>Revalidate</button>
       </form>
@@ -28,10 +46,11 @@ export default async function Page() {
 
 async function RandomWikiArticle() {
   const randomWiki = await fetch(randomWikiUrl, {
-    next: { tags: [tagName] }
+    cache: 'force-cache',
+    next: {
+      tags: [tagName]
+    }
   });
-
-  const time = Date.now();
 
   const content = await randomWiki.json();
   let extract = content.extract;
@@ -43,9 +62,7 @@ async function RandomWikiArticle() {
 
   return (
     <div className='bg-white text-neutral-600 card my-6 max-w-2xl'>
-      <div className='card-title text-3xl px-8 pt-8'>
-        {content.title} - {new Date(time).toLocaleTimeString()}
-      </div>
+      <div className='card-title text-3xl px-8 pt-8'>{content.title}</div>
       <div className='card-body py-4'>
         <div className='text-lg font-bold'>{content.description}</div>
         <p className='italic'>{extract}</p>
