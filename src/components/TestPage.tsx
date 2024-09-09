@@ -7,7 +7,7 @@ export type Props = {
   time: number;
 };
 
-export default function TestPage({ site, slug, time = Date.now() }: Props) {
+export default function TestPage({ site, slug, time }: Props) {
   const router = useRouter();
   const queryParams = router.query;
   const { region, apiUrl } = getRegionMeta(site);
