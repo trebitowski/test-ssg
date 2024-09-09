@@ -1,12 +1,10 @@
-import type { Metadata, ResolvingMetadata } from 'next';
-import { revalidateTag } from 'next/cache';
+import type { Metadata } from 'next';
 
 type Props = {
   params: { site: string; slug: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-const tagName = 'randomWiki';
 const randomWikiUrl =
   'https://en.wikipedia.org/api/rest_v1/page/random/summary';
 const maxExtractLength = 200;
@@ -23,11 +21,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Props) {
-  async function revalidateWiki() {
-    'use server';
-    revalidateTag(tagName);
-  }
-
   const time = Date.now();
 
   return (
@@ -36,9 +29,6 @@ export default async function Page({ params }: Props) {
       <p>Site: {params.site}</p>
       <p>Slug: {params.slug}</p>
       <p>Generated: {new Date(time).toLocaleTimeString()}</p>
-      <form className='mt-4' action={revalidateWiki}>
-        <button>Revalidate</button>
-      </form>
       <RandomWikiArticle />
     </>
   );
@@ -46,10 +36,7 @@ export default async function Page({ params }: Props) {
 
 async function RandomWikiArticle() {
   const randomWiki = await fetch(randomWikiUrl, {
-    cache: 'force-cache',
-    next: {
-      tags: [tagName]
-    }
+    cache: 'force-cache'
   });
 
   const content = await randomWiki.json();
