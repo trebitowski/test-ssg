@@ -8,7 +8,6 @@ export default async function subdomainRewrite(
   const url = new URL(request.url);
   const hostname = url.hostname;
   const slug = context.params.slug ?? url.searchParams.get('slug');
-  const origin = getOrigin(hostname);
 
   console.log('Edge Function Execution:');
   console.log('  Request URL:', request.url);
@@ -24,7 +23,7 @@ export default async function subdomainRewrite(
     return Response.redirect('https://google.com', 302);
   }
 
-  const newPath = `${origin}/_forms/${hostname}/${slug}`;
+  const newPath = `${hostname}/_forms/${hostname}/${slug}`;
   const newUrl = new URL(newPath, url);
   console.log('  Rewritten URL:', newUrl.href);
 
@@ -34,28 +33,3 @@ export default async function subdomainRewrite(
 export const config = {
   path: ['/to/:slug', '/']
 } satisfies Config;
-
-const AUSTRALIA = 'au';
-const CA = 'ca';
-const EU = 'eu';
-const US = 'us';
-
-const hostRegionMap = {
-  'ca.trebitowski.com': CA,
-  'au.trebitowski.com': AUSTRALIA,
-  'eu.trebitowski.com': EU,
-  'us.trebitowski.com': US
-} as Record<string, string>;
-
-const originRegionMap = {
-  [CA]: 'https://ca.trebitowski.com',
-  [AUSTRALIA]: 'https://au.trebitowski.com',
-  [EU]: 'https://eu.trebitowski.com',
-  [US]: 'https://us.trebitowski.com'
-} as Record<string, string>;
-
-export function getOrigin(host: string) {
-  // default to US if host is not in hostRegionMap
-  const region = hostRegionMap[host] ?? US;
-  return originRegionMap[region];
-}
