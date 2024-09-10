@@ -6,10 +6,6 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-const randomWikiUrl =
-  'https://en.wikipedia.org/api/rest_v1/page/random/summary';
-const maxExtractLength = 200;
-
 export const dynamic = 'force-static';
 export const dynamicParams = true;
 
@@ -19,7 +15,7 @@ function pickRandomIcon(input: string) {
     input.split('').reduce((acc, char) => {
       return acc + char.charCodeAt(0);
     }, 0) % ICON_COUNT;
-  return `/icons/${hash}.png`;
+  return `/icons/${hash}.ico`;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
