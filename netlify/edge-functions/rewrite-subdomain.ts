@@ -1,4 +1,4 @@
-import type { Config, Context } from '@netlify/edge-functions';
+import type { Config, Context } from '@netlify/functions';
 import { CacheHeaders } from 'cdn-cache-control';
 
 export default async function subdomainRewrite(
