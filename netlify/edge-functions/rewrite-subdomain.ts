@@ -1,5 +1,4 @@
 import type { Config, Context } from '@netlify/functions';
-import { CacheHeaders } from 'cdn-cache-control';
 
 export default async function subdomainRewrite(
   request: Request,
@@ -15,12 +14,10 @@ export default async function subdomainRewrite(
   console.log('  Pathname:', url.pathname);
   console.log('  Search Params:', url.searchParams.toString());
   console.log('  Extracted Slug:', slug);
-  const headers = new CacheHeaders().tag(hostname, `${hostname}-${slug}`);
-  console.log('  Headers:', headers);
 
   if (!slug) {
     console.log('  Action: Redirecting to Google');
-    return Response.redirect('https://google.com', 302);
+    return Response.redirect('https://feathery.io', 302);
   }
 
   const newPath = `/_forms/${hostname}/${slug}`;

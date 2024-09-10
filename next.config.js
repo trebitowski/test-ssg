@@ -8,11 +8,11 @@ const nextConfig = {
         headers: [
           {
             key: 'Netlify-Cache-Tag',
-            value: ':site\\::slug' // Matched parameters can be used in the value
+            value: ':site-:slug'
           },
           {
             key: 'Cache-Tag',
-            value: ':site\\::slug' // Matched parameters can be used in the value
+            value: ':site-:slug'
           }
         ]
       }
