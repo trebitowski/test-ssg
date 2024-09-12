@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  experimental: {
+    // for sentry config - see instrumentation.ts
+    instrumentationHook: true
+  },
   async headers() {
     return [
       {
