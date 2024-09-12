@@ -9,25 +9,10 @@ type Props = {
 export const dynamic = 'force-static';
 export const dynamicParams = true;
 
-function pickRandomIcon(input: string) {
-  const ICON_COUNT = 5;
-  const hash =
-    input.split('').reduce((acc, char) => {
-      return acc + char.charCodeAt(0);
-    }, 0) % ICON_COUNT;
-  return `/icons/${hash}.ico`;
-}
-
-function getAvatarUrl(input: string) {
-  return `https://api.dicebear.com/9.x/icons/svg?seed=${input}&radius=50&size=32`;
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const slug = params.slug;
-  const timestamp = new Date().toISOString();
   return {
-    title: slug,
-    icons: [{ rel: 'icon', url: getAvatarUrl(timestamp) }]
+    title: `Form - ${slug}`
   };
 }
 
