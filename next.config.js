@@ -8,7 +8,7 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/_forms/:site/:slug',
+        source: '/_forms/:slug/:site',
         headers: [
           {
             key: 'Netlify-Cache-Tag',
