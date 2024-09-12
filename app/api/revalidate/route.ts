@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
 
   try {
     // This will revalidate the page and update the cache
-    revalidatePath(path, 'page');
+    revalidatePath(path, 'layout');
     purgeCache({ tags: [cacheTag] });
     console.log('  Action: Revalidated and purged');
     return NextResponse.json({ revalidated: true, now: Date.now() });
