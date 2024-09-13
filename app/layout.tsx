@@ -5,7 +5,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body style={{ padding: '2rem' }}>{children}</body>
+      <body>{children}</body>
     </html>
   );
 }

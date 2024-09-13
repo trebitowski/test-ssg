@@ -8,12 +8,8 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/_forms/:slug/:site',
+        source: '/_forms/:site/:slug',
         headers: [
-          {
-            key: 'Cache-Tag',
-            value: ':slug'
-          },
           {
             key: 'Cache-Tag',
             value: ':slug'
