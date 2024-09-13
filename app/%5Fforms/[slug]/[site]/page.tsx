@@ -5,9 +5,9 @@ type Props = {
   params: { site: string; slug: string };
 };
 
-export const revalidate = 60;
-export const dynamic = 'force-static';
-export const dynamicParams = true;
+export async function generateStaticParams() {
+  return [];
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const slug = params.slug;
@@ -31,7 +31,7 @@ export default async function Page({ params }: Props) {
       <h1>Revalidation</h1>
       <p>Site: {params.site}</p>
       <p>Slug: {params.slug}</p>
-      <p>Path: {`_forms/${params.site}/${params.slug}`}</p>
+      <p>Path: {`_forms/${params.slug}/${params.site}`}</p>
       <p>Region: {region}</p>
       <p>API URL: {apiUrl}</p>
       <p>
