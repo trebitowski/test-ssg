@@ -4,23 +4,6 @@ const nextConfig = {
   experimental: {
     // for sentry config - see instrumentation.ts
     instrumentationHook: true
-  },
-  async headers() {
-    return [
-      {
-        source: '/_forms/:slug/:site',
-        headers: [
-          {
-            key: 'Netlify-Cache-Tag',
-            value: ':slug'
-          },
-          {
-            key: 'Cache-Tag',
-            value: ':slug'
-          }
-        ]
-      }
-    ];
   }
 };
 

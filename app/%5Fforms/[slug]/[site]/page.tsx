@@ -3,7 +3,6 @@ import { getRegionMeta } from '../../../../utils/regions';
 
 type Props = {
   params: { site: string; slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
 };
 
 export const dynamic = 'force-static';

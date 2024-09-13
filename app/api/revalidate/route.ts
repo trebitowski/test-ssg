@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { purgeCache } from '@netlify/functions';
+// import { purgeCache } from '@netlify/functions';
 import { revalidatePath } from 'next/cache';
 
 export async function POST(request: NextRequest) {
@@ -13,15 +13,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: 'Slug is required' }, { status: 400 });
   }
 
-  const path = `/_forms/${slug}/[site]`;
+  const path = `/_forms/${slug}`;
   console.log('  Path:', path);
-  const cacheTag = `${slug}`;
-  console.log('  Cache Tag:', cacheTag);
+  // const cacheTag = `${slug}`;
+  // console.log('  Cache Tag:', cacheTag);
 
   try {
     // This will revalidate the page and update the cache
     revalidatePath(path, 'layout');
-    purgeCache({ tags: [cacheTag] });
+    // purgeCache({ tags: [cacheTag] });
     console.log('  Action: Revalidated and purged');
     return NextResponse.json({ revalidated: true, now: Date.now() });
   } catch (err) {
