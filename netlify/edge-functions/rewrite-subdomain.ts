@@ -15,11 +15,6 @@ export default async function subdomainRewrite(
   console.log('  Search Params:', url.searchParams.toString());
   console.log('  Extracted Slug:', slug);
 
-  if (!slug) {
-    console.log('  Action: Redirecting to Feathery homepage');
-    return Response.redirect('https://feathery.io', 302);
-  }
-
   const newPath = `/_forms/${site}/${slug}`;
   const newUrl = new URL(newPath, url);
   console.log('  Rewritten URL:', newUrl.href);
