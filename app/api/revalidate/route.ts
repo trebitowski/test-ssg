@@ -4,22 +4,16 @@ import { purgeCache } from '@netlify/functions';
 
 export async function POST(request: NextRequest) {
   console.log('[revalidate]');
-  const site = request.nextUrl.searchParams.get('site');
   const slug = request.nextUrl.searchParams.get('slug');
   console.log('Revalidate API Execution:');
   console.log('  Slug:', slug);
-
-  if (!site) {
-    console.log('  Action: Missing site');
-    return NextResponse.json({ message: 'Site is required' }, { status: 400 });
-  }
 
   if (!slug) {
     console.log('  Action: Missing slug');
     return NextResponse.json({ message: 'Slug is required' }, { status: 400 });
   }
 
-  const path = `/_forms/${slug}/${site}`;
+  const path = `/_forms/${slug}/[site]`;
   console.log('  Path:', path);
 
   const cacheTag = `${slug}`;
@@ -27,7 +21,7 @@ export async function POST(request: NextRequest) {
 
   try {
     // This will revalidate the page and update the cache
-    revalidatePath(path);
+    revalidatePath(path, 'page');
     purgeCache({ tags: [cacheTag] });
     console.log('  Action: Revalidated and purged');
     return NextResponse.json({ revalidated: true, now: Date.now() });
