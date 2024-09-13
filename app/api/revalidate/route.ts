@@ -1,28 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { purgeCache } from '@netlify/functions';
 import { revalidatePath } from 'next/cache';
+import { purgeCache } from '@netlify/functions';
 
 export async function POST(request: NextRequest) {
   console.log('[revalidate]');
-  const slug = request.nextUrl.searchParams.get('slug');
   const site = request.nextUrl.searchParams.get('site');
+  const slug = request.nextUrl.searchParams.get('slug');
   console.log('Revalidate API Execution:');
   console.log('  Slug:', slug);
-
-  if (!slug) {
-    console.log('  Action: Missing slug');
-    return NextResponse.json({ message: 'Slug is required' }, { status: 400 });
-  }
 
   if (!site) {
     console.log('  Action: Missing site');
     return NextResponse.json({ message: 'Site is required' }, { status: 400 });
   }
 
-  const path = `/_forms/${slug}/${site}/`;
+  if (!slug) {
+    console.log('  Action: Missing slug');
+    return NextResponse.json({ message: 'Slug is required' }, { status: 400 });
+  }
+
+  const path = `/_forms/${site}/${slug}`;
   console.log('  Path:', path);
 
-  const cacheTag = `${slug}-${site}`;
+  const cacheTag = `${site}-${slug}`;
   console.log('  Cache Tag:', cacheTag);
 
   try {

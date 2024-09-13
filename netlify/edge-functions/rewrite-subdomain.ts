@@ -20,7 +20,7 @@ export default async function subdomainRewrite(
     return Response.redirect('https://feathery.io', 302);
   }
 
-  const newPath = `/_forms/${slug}/${site}`;
+  const newPath = `/_forms/${site}/${slug}`;
   const newUrl = new URL(newPath, url);
   console.log('  Rewritten URL:', newUrl.href);
 
