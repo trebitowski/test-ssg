@@ -3,6 +3,7 @@ import { fetchMetadata } from '@/utils/metadata';
 import type { Metadata, Viewport } from 'next';
 import FeatheryFormPage from './FeatheryFormPage';
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
 
 type Props = {
   params: { site: string; slug: string };
@@ -65,5 +66,9 @@ export default async function Page({ params }: Props) {
     site: params.site
   });
 
-  return <FeatheryFormPage slug={slug} site={site} {...(result as any)} />;
+  return (
+    <Suspense>
+      <FeatheryFormPage slug={slug} site={site} {...(result as any)} />
+    </Suspense>
+  );
 }
