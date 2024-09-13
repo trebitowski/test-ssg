@@ -9,10 +9,7 @@ export function checkForHostRedirect(host: String) {
     // We don't support nested subdomains
     if (domainParts.length > 3) {
       return {
-        redirect: {
-          destination: 'https://feathery.io',
-          permanent: false
-        }
+        redirect: 'https://feathery.io'
       };
     }
   }

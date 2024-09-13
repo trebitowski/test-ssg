@@ -52,11 +52,13 @@ export default async function Page({ params }: Props) {
   const slug = params.slug;
 
   const redirectData = checkForHostRedirect(site);
+  console.log('Redirect Data:', redirectData);
   if (redirectData) {
-    redirect(redirectData.redirect.destination);
+    redirect(redirectData.redirect);
   }
 
   const result = await fetchMetadata(slug, site);
+  console.log('Result:', result);
   if (result.redirect) {
     redirect(result.redirect);
   }
