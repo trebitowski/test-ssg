@@ -18,12 +18,12 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
-  themeColor: 'black'
+  themeColor: '#000000'
 };
 
 const default_favicon = '/favicon.ico';
 const default_description = 'The most powerful no-code forms & workflows';
-const default_meta_image = '/featheryMetaImage.png';
+const default_meta_image = 'https://trebitowski.com/featheryMetaImage.png';
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const result = await fetchMetadata(params.slug, params.site);
 
