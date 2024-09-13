@@ -9,11 +9,11 @@ type Props = {
 export const dynamic = 'force-static';
 export const dynamicParams = true;
 
-async function fetchRandomWord(slug: string): Promise<string> {
+async function fetchRandomWord(slug: string, site: string): Promise<string> {
   const response = await fetch(
     'https://random-word-api.herokuapp.com/word?number=1',
     {
-      next: { tags: [slug] }
+      next: { tags: [site, slug] }
     }
   );
   const data = await response.json();
@@ -25,20 +25,19 @@ function getAvatarUrl(input: string) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const slug = params.slug;
-  const timestamp = new Date().toISOString();
+  const random_icon = getAvatarUrl(new Date().toISOString());
+  const random_word = await fetchRandomWord(params.slug, params.site);
 
-  const word = await fetchRandomWord(slug);
   return {
-    title: `${slug} - ${word}`,
-    icons: [{ rel: 'icon', url: getAvatarUrl(timestamp) }]
+    title: `${params.slug} - ${random_word}`,
+    icons: [{ rel: 'icon', url: random_icon }]
   };
 }
 
 export default async function Page({ params }: Props) {
   const timestamp = new Date();
   const { region, apiUrl } = getRegionMeta(params.site);
-  const word = await fetchRandomWord(params.slug);
+  const random_word = await fetchRandomWord(params.slug, params.site);
 
   console.log('Building Page', {
     slug: params.slug,
@@ -46,7 +45,7 @@ export default async function Page({ params }: Props) {
     region,
     apiUrl,
     date: timestamp,
-    word
+    word: random_word
   });
   return (
     <>
@@ -56,7 +55,7 @@ export default async function Page({ params }: Props) {
       <p>Path: {`_forms/${params.site}/${params.slug}`}</p>
       <p>Region: {region}</p>
       <p>API URL: {apiUrl}</p>
-      <p>Word: {word}</p>
+      <p>Word: {random_word}</p>
       <p>
         Generated:{' '}
         {`${timestamp.toLocaleDateString()} ${timestamp.toLocaleTimeString()}`}
