@@ -8,15 +8,15 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/_forms/:site/:slug',
+        source: '/_forms/:slug/:site',
         headers: [
           {
             key: 'Cache-Tag',
-            value: ':site-:slug'
+            value: ':slug-:site'
           },
           {
             key: 'Cache-Tag',
-            value: ':site-:slug'
+            value: ':slug-:site'
           }
         ]
       }

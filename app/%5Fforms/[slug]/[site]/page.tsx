@@ -46,7 +46,7 @@ export default async function Page({ params }: Props) {
       <h1>Revalidation</h1>
       <p>Site: {params.site}</p>
       <p>Slug: {params.slug}</p>
-      <p>Path: {`_forms/${params.site}/${params.slug}`}</p>
+      <p>Path: {`_forms/${params.slug}/${params.site}`}</p>
       <p>Region: {region}</p>
       <p>API URL: {apiUrl}</p>
       <p>
