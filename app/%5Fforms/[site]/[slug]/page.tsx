@@ -6,8 +6,9 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export const dynamic = 'force-static';
-export const dynamicParams = true;
+export async function generateStaticParams() {
+  return [];
+}
 
 async function fetchRandomWord(slug: string, site: string): Promise<string> {
   const response = await fetch(
