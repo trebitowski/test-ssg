@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: 'Slug is required' }, { status: 400 });
   }
 
-  const path = `/_forms/${slug}/[site]`;
+  const path = `/_forms/${slug}/[site]/page`;
   console.log('  Path:', path);
 
   const cacheTag = `${slug}`;
