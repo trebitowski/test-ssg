@@ -12,11 +12,11 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Tag',
-            value: ':slug-:site'
+            value: ':slug'
           },
           {
             key: 'Cache-Tag',
-            value: ':slug-:site'
+            value: ':slug'
           }
         ]
       }

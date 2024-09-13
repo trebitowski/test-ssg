@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
   const path = `/_forms/${slug}/${site}`;
   console.log('  Path:', path);
 
-  const cacheTag = `${slug}-${site}`;
+  const cacheTag = `${slug}`;
   console.log('  Cache Tag:', cacheTag);
 
   try {
