@@ -2,6 +2,7 @@ import { isLocal } from './helpers';
 import { getRegionMeta } from './regions';
 
 export async function fetchMetadata(slug: string, site: string) {
+  site = site.replaceAll('trebitowski.com', 'feathery.io');
   console.log('Fetch Metadata Execution:');
   console.log('  Site:', site);
   console.log('  Slug:', slug);
@@ -9,10 +10,7 @@ export async function fetchMetadata(slug: string, site: string) {
   const IS_LOCAL = isLocal(site);
   console.log('  IS_LOCAL:', IS_LOCAL);
 
-  const customDomain =
-    IS_LOCAL || site.endsWith('feathery.io') || site.endsWith('trebitowski.com')
-      ? ''
-      : site;
+  const customDomain = IS_LOCAL || site.endsWith('feathery.io') ? '' : site;
 
   console.log('  Custom Domain:', customDomain);
   const { apiUrl } = getRegionMeta(site);

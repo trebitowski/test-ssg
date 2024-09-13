@@ -3,7 +3,7 @@
 import { featheryOptions } from '@/utils/helpers';
 import parseQueryParams from '@/utils/queryParams';
 import { getRegionMeta } from '@/utils/regions';
-import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 import FeatheryForm from './FeatheryForm';
 
 export type Props = {
@@ -23,9 +23,10 @@ export default function FeatheryFormPage({
   sdkKey = '',
   customDomain = ''
 }: Props) {
-  const router = useRouter();
-  const parsedQueryParams = parseQueryParams(router.query);
-  const featheryOpts = featheryOptions(router.query);
+  const searchParams = useSearchParams();
+  const parsedQueryParams = parseQueryParams(searchParams);
+  const featheryOpts = featheryOptions(searchParams);
+  site = site.replaceAll('trebitowski.com', 'feathery.io');
   const { region } = getRegionMeta(site);
 
   return (

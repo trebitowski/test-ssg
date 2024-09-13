@@ -4,13 +4,13 @@ const EU = 'eu';
 const US = 'us';
 
 const hostRegionMap = {
-  'haleoclinic.trebitowski.com': CA,
-  'cashcofinancial.trebitowski.com': CA,
-  'weel.trebitowski.com': AUSTRALIA,
-  'umlautsolutions.trebitowski.com': AUSTRALIA,
-  'sympatient.trebitowski.com': EU,
-  'eu-customsubdomain.trebitowski.com': EU, // test org 'eu-customsubdomain'
-  'au-customsubdomain.trebitowski.com': AUSTRALIA // test org 'au-customsubdomain'
+  'haleoclinic.feathery.io': CA,
+  'cashcofinancial.feathery.io': CA,
+  'weel.feathery.io': AUSTRALIA,
+  'umlautsolutions.feathery.io': AUSTRALIA,
+  'sympatient.feathery.io': EU,
+  'eu-customsubdomain.feathery.io': EU, // test org 'eu-customsubdomain'
+  'au-customsubdomain.feathery.io': AUSTRALIA // test org 'au-customsubdomain'
 } as Record<string, string>;
 
 const apiRegionMap = {
