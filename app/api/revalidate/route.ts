@@ -1,18 +1,27 @@
 import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
-  const slug = request.nextUrl.searchParams.get('slug');
-  console.log('Revalidate API Execution:');
-  console.log('  Slug:', slug);
+export async function POST(request: NextRequest) {
+  const body = await request.json();
 
-  if (!slug) {
-    console.log('  Action: Missing slug');
-    return NextResponse.json({ message: 'Slug is required' }, { status: 400 });
+  const slugs: string[] =
+    typeof body.slugs === 'string' ? [body.slugs] : body.slugs;
+
+  console.log('Revalidate API Execution:');
+  console.log('  Slugs:', slugs);
+
+  if (!slugs) {
+    console.log('  Action: Missing slugs');
+    return NextResponse.json(
+      { message: 'Slugs are required' },
+      { status: 400 }
+    );
   }
 
   try {
-    revalidateTag(slug);
+    slugs.forEach((slug) => {
+      revalidateTag(slug);
+    });
     console.log('  Action: Revalidated and purged');
     return NextResponse.json({ revalidated: true, now: Date.now() });
   } catch (err) {
