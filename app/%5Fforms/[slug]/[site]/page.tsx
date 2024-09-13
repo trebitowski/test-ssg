@@ -5,6 +5,7 @@ type Props = {
   params: { site: string; slug: string };
 };
 
+export const revalidate = 60;
 export const dynamic = 'force-static';
 export const dynamicParams = true;
 
