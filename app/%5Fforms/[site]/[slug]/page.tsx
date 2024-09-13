@@ -1,5 +1,7 @@
+import { checkForHostRedirect } from '@/utils/helpers';
+import { fetchMetadata } from '@/utils/metadata';
 import type { Metadata } from 'next';
-import { getRegionMeta } from '../../../../utils/regions';
+import FeatheryFormPage from './FeatheryFormPage';
 
 type Props = {
   params: { site: string; slug: string };
@@ -10,57 +12,54 @@ export async function generateStaticParams() {
   return [];
 }
 
-async function fetchRandomWord(slug: string, site: string): Promise<string> {
-  const response = await fetch(
-    'https://random-word-api.herokuapp.com/word?number=1',
-    {
-      next: { tags: [site, slug] }
-    }
-  );
-  const data = await response.json();
-  return data[0];
-}
-
-function getAvatarUrl(input: string) {
-  return `https://api.dicebear.com/9.x/icons/svg?seed=${input}&radius=50&size=32`;
-}
-
+const default_favicon = '/favicon.ico';
+const default_description = 'The most powerful no-code forms & workflows';
+const default_meta_image = '/featheryMetaImage.png';
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const random_icon = getAvatarUrl(new Date().toISOString());
-  const random_word = await fetchRandomWord(params.slug, params.site);
+  const result = await fetchMetadata(params.slug, params.site);
 
   return {
-    title: `${params.slug} - ${random_word}`,
-    icons: [{ rel: 'icon', url: random_icon }]
+    title: result.seoTitle,
+    description: result.seoDescription || default_description,
+    viewport: 'width=device-width, initial-scale=1',
+    icons: [
+      { rel: 'icon', url: result.favicon || default_favicon },
+      { rel: 'apple-touch-icon', url: '/logo.png' }
+    ],
+    themeColor: '#000000',
+    openGraph: {
+      images: [
+        {
+          url: result.seoMetaImage || default_meta_image,
+          width: 1200,
+          height: 630
+        }
+      ]
+    },
+    manifest: '/manifest.json'
   };
 }
 
 export default async function Page({ params }: Props) {
-  const timestamp = new Date();
-  const { region, apiUrl } = getRegionMeta(params.site);
-  const random_word = await fetchRandomWord(params.slug, params.site);
+  const site = params.site;
+  const slug = params.slug;
+
+  const redirect = checkForHostRedirect(site);
+  if (redirect) return redirect;
+
+  const result = await fetchMetadata(slug, site);
+  if (result.redirect)
+    return {
+      redirect: {
+        destination: result.redirect,
+        permanent: false
+      }
+    };
 
   console.log('Building Page', {
     slug: params.slug,
-    site: params.site,
-    region,
-    apiUrl,
-    date: timestamp,
-    word: random_word
+    site: params.site
   });
-  return (
-    <>
-      <h1>Revalidation</h1>
-      <p>Site: {params.site}</p>
-      <p>Slug: {params.slug}</p>
-      <p>Path: {`_forms/${params.site}/${params.slug}`}</p>
-      <p>Region: {region}</p>
-      <p>API URL: {apiUrl}</p>
-      <p>Word: {random_word}</p>
-      <p>
-        Generated:{' '}
-        {`${timestamp.toLocaleDateString()} ${timestamp.toLocaleTimeString()}`}
-      </p>
-    </>
-  );
+
+  return <FeatheryFormPage slug={slug} site={site} {...(result as any)} />;
 }
