@@ -40,6 +40,8 @@ export async function fetchMetadata(slug: string, site: string) {
   };
   // const env = (process.env.NEXT_PUBLIC_BACKEND_ENV ||
   //   'production') as keyof typeof envApiUrls;
+  console.log('abc', process.env.NEXT_PUBLIC_BACKEND_ENV);
+  console.log('dev', process.env.BACKEND_ENV);
   const env = 'staging';
   console.log('  Env:', env);
   console.log(
