@@ -23,7 +23,7 @@ export const viewport: Viewport = {
 
 const default_favicon = '/favicon.ico';
 const default_description = 'The most powerful no-code forms & workflows';
-const default_meta_image = 'https://trebitowski.com/featheryMetaImage.png';
+const default_meta_image = 'https://form.trebitowski.com/featheryMetaImage.png';
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const result = await fetchMetadata(params.slug, params.site);
 
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Props) {
-  const site = params.site;
+  const site = params.site.replaceAll('trebitowski.com', 'feathery.io');
   const slug = params.slug;
 
   const redirectData = checkForHostRedirect(site);

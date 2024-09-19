@@ -1,6 +1,8 @@
 import { isLocal } from './helpers';
 import { getRegionMeta } from './regions';
 
+const ONE_WEEK_SECONDS = 7 * 24 * 60 * 60;
+
 export async function fetchMetadata(slug: string, site: string) {
   site = site.replaceAll('trebitowski.com', 'feathery.io');
   console.log('Fetch Metadata Execution:');
@@ -36,13 +38,18 @@ export async function fetchMetadata(slug: string, site: string) {
     staging: 'https://staging.feathery.io',
     production: apiUrl
   };
-  const env = (process.env.NEXT_PUBLIC_BACKEND_ENV ||
-    'production') as keyof typeof envApiUrls;
+  // const env = (process.env.NEXT_PUBLIC_BACKEND_ENV ||
+  //   'production') as keyof typeof envApiUrls;
+  const env = 'staging';
   console.log('  Env:', env);
+  console.log(
+    '  Fetch:',
+    `${envApiUrls[env]}/api/panel/slug/${orgSlug}/${slug}/?custom_domain=${customDomain}`
+  );
   const response = await fetch(
     `${envApiUrls[env]}/api/panel/slug/${orgSlug}/${slug}/?custom_domain=${customDomain}`,
     {
-      next: { tags: [slug] }
+      next: { tags: [slug], revalidate: ONE_WEEK_SECONDS }
     }
   );
   console.log('  Response:', response);

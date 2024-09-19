@@ -5,19 +5,6 @@ const nextConfig = {
     // for sentry config - see instrumentation.ts
     instrumentationHook: true
   }
-  // async headers() {
-  //   return [
-  //     {
-  //       source: '/_forms/:site/:slug',
-  //       headers: [
-  //         {
-  //           key: 'Cache-Tag',
-  //           value: ':slug'
-  //         }
-  //       ]
-  //     }
-  //   ];
-  // }
 };
 
 module.exports = nextConfig;
