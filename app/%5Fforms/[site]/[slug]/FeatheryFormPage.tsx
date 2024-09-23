@@ -17,13 +17,15 @@ export type Props = {
 
 export default function FeatheryFormPage() {
   const searchParams = useSearchParams();
-  const parsedQueryParams = parseQueryParams(searchParams);
-  const featheryOpts = featheryOptions(searchParams);
+  const searchParamsObj = Object.fromEntries(searchParams.entries());
+  const parsedQueryParams = parseQueryParams(searchParamsObj);
+  const featheryOpts = featheryOptions(searchParamsObj);
 
   console.log('searchParams', searchParams);
   return (
     <>
       <pre>{JSON.stringify(searchParams, null, 2)}</pre>
+      <pre>{JSON.stringify(searchParamsObj, null, 2)}</pre>
       <pre>{JSON.stringify(parsedQueryParams, null, 2)}</pre>
       <pre>{JSON.stringify(featheryOpts, null, 2)}</pre>
     </>
