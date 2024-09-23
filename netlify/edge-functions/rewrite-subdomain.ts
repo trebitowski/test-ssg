@@ -7,12 +7,13 @@ export default async function subdomainRewrite(
   const url = new URL(request.url);
   const site = url.hostname;
   // Extract slug from context.params
-  let slug = context.params.slug || '';
-  // Trim trailing slash from slug if present
-  slug = slug.replace(/\/$/, '');
+  let slug =
+    context.params.slug ||
+    url.searchParams.get('slug') ||
+    url.pathname.split('/').filter(Boolean)[1];
 
   if (!slug) {
-    slug = url.searchParams.get('slug') || '';
+    slug = 'null';
   }
   console.log('Edge Function Execution:');
   console.log('  Request URL:', request.url);
