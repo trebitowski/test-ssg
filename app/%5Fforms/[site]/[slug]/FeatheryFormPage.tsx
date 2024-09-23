@@ -29,6 +29,7 @@ export default function FeatheryFormPage({
   site = site.replaceAll('trebitowski.com', 'feathery.io');
   const { region } = getRegionMeta(site);
 
+  console.log('searchParams', searchParams);
   return (
     <>
       {slug && (
