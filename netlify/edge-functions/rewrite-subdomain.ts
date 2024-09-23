@@ -6,8 +6,14 @@ export default async function subdomainRewrite(
 ) {
   const url = new URL(request.url);
   const site = url.hostname;
-  const slug = context.params.slug ?? url.searchParams.get('slug');
+  // Extract slug from context.params
+  let slug = context.params.slug || '';
+  // Trim trailing slash from slug if present
+  slug = slug.replace(/\/$/, '');
 
+  if (!slug) {
+    slug = url.searchParams.get('slug') || '';
+  }
   console.log('Edge Function Execution:');
   console.log('  Request URL:', request.url);
   console.log('  Site:', site);
@@ -24,5 +30,5 @@ export default async function subdomainRewrite(
 }
 
 export const config = {
-  path: ['/to/:slug(\\/?)?', '/']
+  path: ['/to/:slug/', '/to/:slug', '/']
 } satisfies Config;
