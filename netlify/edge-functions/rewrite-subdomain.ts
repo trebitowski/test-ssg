@@ -18,8 +18,15 @@ export default async function subdomainRewrite(
   }
 
   const newPath = `/_forms/${site}/${slug}`;
-  console.log('New URL:', new URL(newPath, url));
-  return new URL(newPath, url);
+  // Create a new URL object with the new path
+  const newUrl = new URL(newPath, url.origin);
+
+  // Carry through all search params from the original URL
+  url.searchParams.forEach((value, key) => {
+    newUrl.searchParams.append(key, value);
+  });
+  console.log('New URL:', newUrl);
+  return newUrl;
 }
 
 export const config = {

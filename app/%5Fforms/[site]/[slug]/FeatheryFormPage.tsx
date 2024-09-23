@@ -15,35 +15,17 @@ export type Props = {
   customDomain: string;
 };
 
-export default function FeatheryFormPage({
-  site,
-  slug,
-  draft = false,
-  useAuth = false,
-  sdkKey = '',
-  customDomain = ''
-}: Props) {
+export default function FeatheryFormPage() {
   const searchParams = useSearchParams();
   const parsedQueryParams = parseQueryParams(searchParams);
   const featheryOpts = featheryOptions(searchParams);
-  site = site.replaceAll('trebitowski.com', 'feathery.io');
-  const { region } = getRegionMeta(site);
 
   console.log('searchParams', searchParams);
   return (
     <>
-      {slug && (
-        <FeatheryForm
-          formId={slug}
-          useAuth={useAuth}
-          draft={draft}
-          sdkKey={sdkKey}
-          region={region}
-          parsedQueryParams={parsedQueryParams}
-          featheryOpts={featheryOpts}
-          customDomain={customDomain}
-        />
-      )}
+      <pre>{JSON.stringify(searchParams, null, 2)}</pre>
+      <pre>{JSON.stringify(parsedQueryParams, null, 2)}</pre>
+      <pre>{JSON.stringify(featheryOpts, null, 2)}</pre>
     </>
   );
 }
