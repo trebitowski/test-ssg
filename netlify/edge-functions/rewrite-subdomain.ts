@@ -24,5 +24,5 @@ export default async function subdomainRewrite(
 }
 
 export const config = {
-  path: ['/to/:slug', '/to/:slug/', '/']
+  path: ['/to/:slug(\\/?)?', '/']
 } satisfies Config;
