@@ -30,6 +30,7 @@ export default async function Page({ params }: Props) {
   return (
     <Suspense>
       <p>{`slug=${params.slug} site=${params.site}`}</p>
+      <FeatheryFormPage />
     </Suspense>
   );
 }

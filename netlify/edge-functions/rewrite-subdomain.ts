@@ -6,6 +6,7 @@ export default async function subdomainRewrite(
 ) {
   const url = new URL(request.url);
   const site = url.hostname;
+
   // Extract slug from context.params
   let slug =
     context.params.slug ||
@@ -16,18 +17,16 @@ export default async function subdomainRewrite(
   if (!slug) {
     slug = 'null';
   }
-  console.log('Edge Function Execution:');
-  console.log('  Request URL:', request.url);
-  console.log('  Site:', site);
-  console.log('  Pathname:', url.pathname);
-  console.log('  Search Params:', url.searchParams.toString());
-  console.log('  Extracted Slug:', slug);
 
   const newPath = `/_forms/${site}/${slug}`;
-  const newUrl = new URL(newPath, url);
-  console.log('  Rewritten URL:', newUrl.href);
+  // Create a new URL object with the new path
+  const newUrl = new URL(newPath, url.origin);
 
-  console.log('  Action: Redirecting to rewritten URL');
+  // Carry through all search params from the original URL
+  url.searchParams.forEach((value, key) => {
+    newUrl.searchParams.append(key, value);
+  });
+  console.log('New URL:', newUrl);
   return newUrl;
 }
 
