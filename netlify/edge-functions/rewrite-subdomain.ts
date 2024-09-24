@@ -10,6 +10,7 @@ export default async function subdomainRewrite(
   let slug =
     context.params.slug ||
     url.searchParams.get('slug') ||
+    url.searchParams.get('_slug') ||
     url.pathname.split('/').filter(Boolean)[1];
 
   if (!slug) {
