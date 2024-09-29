@@ -51,7 +51,7 @@ export async function fetchMetadata(slug: string, site: string) {
   const response = await fetch(
     `${envApiUrls[env]}/api/panel/slug/${orgSlug}/${slug}/?custom_domain=${customDomain}`,
     {
-      next: { tags: [slug], revalidate: ONE_WEEK_SECONDS }
+      next: { tags: [slug, `https://${site}`], revalidate: ONE_WEEK_SECONDS }
     }
   );
   console.log('  Response:', response);
@@ -71,6 +71,7 @@ export async function fetchMetadata(slug: string, site: string) {
     } = await response.json();
 
     return {
+      timestamp: new Date().toISOString(),
       formName,
       panelSlug,
       draft,

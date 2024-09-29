@@ -1,6 +1,6 @@
 {
   "name": "ssg-test",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "cross-env NEXT_PUBLIC_BACKEND_ENV=production next dev -p 3001",
@@ -8,29 +8,16 @@
     "dev-staging": "cross-env NEXT_PUBLIC_BACKEND_ENV=staging next dev -p 3001",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "patch-package"
+    "lint": "next lint"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.1",
     "@feathery/react": "2.1.103",
-    "@netlify/functions": "^2.8.1",
+    "@netlify/edge-functions": "^2.11.0",
     "@sentry/nextjs": "^7.81.1",
     "@sentry/tracing": "^7.81.1",
     "next": "^14.2.9",
-    "patch-package": "^8.0.0",
-    "postinstall-postinstall": "^2.1.0",
-    "query-string": "^6.13.2",
     "react": "^18",
-    "react-bootstrap": "^2.9.1",
-    "react-color": "^2.19.3",
-    "react-datepicker": "^5.0.0",
-    "react-dom": "^18",
-    "react-error-boundary": "^4.0.11",
-    "react-select": "^5.8.0",
-    "react-visibility-sensor": "^5.1.1",
-    "scriptjs": "^2.5.9",
-    "webfontloader": "^1.6.28"
+    "react-dom": "^18"
   },
   "devDependencies": {
     "@types/node": "^20",
