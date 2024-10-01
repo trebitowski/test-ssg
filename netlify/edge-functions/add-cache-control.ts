@@ -22,20 +22,25 @@ export default async function handler(
     newResponse.headers.set(key, value);
   });
 
-  // Modify the Vary header
+  // Modify the Vary header to include X-Forwarded-Host
   const varyHeaders = newResponse.headers.get('Vary') || '';
-  newResponse.headers.set('Vary', varyHeaders ? `${varyHeaders},Host` : 'Host');
+  newResponse.headers.set(
+    'Vary',
+    varyHeaders ? `${varyHeaders},X-Forwarded-Host` : 'X-Forwarded-Host'
+  );
 
   // Set the Cache-Control header
-  newResponse.headers.set('Cache-Control', 'public,max-age=0,must-revalidate');
+  newResponse.headers.set('Cache-Control', 'public,s-maxage=31536000,durable');
 
+  // Log the modified headers
   console.log('Headers modified:');
   console.log('  Vary:', newResponse.headers.get('Vary'));
   console.log('  Cache-Control:', newResponse.headers.get('Cache-Control'));
+  console.log('  X-Forwarded-Host:', request.headers.get('X-Forwarded-Host'));
 
   return newResponse;
 }
 
 export const config: Config = {
-  path: '/*'
+  path: '/to/:slug'
 };
