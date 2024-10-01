@@ -10,6 +10,8 @@ export default async function handler(
   response.headers.set('Vary', `${varyHeaders},Host`);
   response.headers.set('Cache-Control', 'public,max-age=0,must-revalidate');
 
+  console.log('add-cache-control Run');
+  console.log('  Response:', JSON.stringify(response, null, 2));
   return response;
 }
 
