@@ -4,6 +4,10 @@ export default async function handler(
   request: Request,
   context: Context
 ): Promise<Response> {
+  console.log(
+    `Edge function running for path: ${new URL(request.url).pathname}`
+  );
+
   // Use Netlify's built-in next() function to render the Next.js page
   const response: Response = await context.next();
 
@@ -25,15 +29,13 @@ export default async function handler(
   // Set the Cache-Control header
   newResponse.headers.set('Cache-Control', 'public,max-age=0,must-revalidate');
 
-  console.log('add-cache-control Run');
-  console.log(
-    '  New Response Headers:',
-    JSON.stringify(Object.fromEntries(newResponse.headers), null, 2)
-  );
+  console.log('Headers modified:');
+  console.log('  Vary:', newResponse.headers.get('Vary'));
+  console.log('  Cache-Control:', newResponse.headers.get('Cache-Control'));
 
   return newResponse;
 }
 
 export const config: Config = {
-  cache: 'manual'
+  path: '/*'
 };
