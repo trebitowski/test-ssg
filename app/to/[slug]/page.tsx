@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { headers } from 'next/headers';
 
 type Props = {
   params: { slug: string };
@@ -21,9 +22,13 @@ export default async function Page({ params }: Props) {
   console.log('Building Page', {
     slug: params.slug
   });
+  const headersList = headers();
+  const host = headersList.get('host') || 'localhost:3000';
   return (
     <div>
+      <p>Proof of concept</p>
       <p>{`time=${new Date().toISOString()}`}</p>
+      <p>{`host=${host}`}</p>
       <p>{`slug=${params.slug}`}</p>
     </div>
   );
