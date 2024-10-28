@@ -1,36 +1,39 @@
+// app/api/revalidate/route.ts
 import { revalidateTag } from 'next/cache';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 
 export async function POST(request: NextRequest) {
-  const body = await request.json();
-
-  const slugs: string[] =
-    typeof body.slugs === 'string' ? [body.slugs] : body.slugs;
-
-  console.log('Revalidate API Execution:');
-  console.log('  Slugs:', slugs);
-
-  if (!slugs) {
-    console.log('  Action: Missing slugs');
-    return NextResponse.json(
-      { message: 'Slugs are required' },
-      { status: 400 }
-    );
-  }
-
   try {
-    slugs.forEach((slug) => {
-      revalidateTag(slug);
+    const { hostname, paths } = await request.json();
+
+    // Revalidate the hostname tag
+    if (hostname) {
+      await revalidateTag(`host-${hostname}`);
+    }
+
+    // Revalidate specific paths if provided
+    if (paths) {
+      if (Array.isArray(paths)) {
+        for (const path of paths) {
+          await revalidateTag(`page-${path}`);
+        }
+      } else {
+        await revalidateTag(`page-${paths}`);
+      }
+    }
+
+    return Response.json({
+      revalidated: true,
+      hostname,
+      paths,
+      date: Date.now()
     });
-    console.log('  Action: Revalidated and purged');
-    return NextResponse.json({ revalidated: true, now: Date.now() });
   } catch (err) {
-    console.log('  Action: Error revalidating');
-    console.log('  Error:', err);
-    // If there was an error, Next.js will continue
-    // to show the last successfully generated page
-    return NextResponse.json(
-      { message: 'Error revalidating' },
+    return Response.json(
+      {
+        error: 'Error revalidating',
+        detail: err instanceof Error ? err.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }

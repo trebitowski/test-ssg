@@ -3,18 +3,12 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env NEXT_PUBLIC_BACKEND_ENV=production next dev -p 3001",
-    "dev-local": "cross-env NEXT_PUBLIC_BACKEND_ENV=local next dev -p 3001",
-    "dev-staging": "cross-env NEXT_PUBLIC_BACKEND_ENV=staging next dev -p 3001",
+    "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@feathery/react": "2.1.103",
-    "@netlify/edge-functions": "^2.11.0",
-    "@sentry/nextjs": "^7.81.1",
-    "@sentry/tracing": "^7.81.1",
     "next": "^14.2.9",
     "react": "^18",
     "react-dom": "^18"
