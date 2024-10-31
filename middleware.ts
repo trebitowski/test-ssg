@@ -11,19 +11,16 @@ export function middleware(request: NextRequest) {
 
   const response = NextResponse.next();
 
+  response.headers.set('Cache-Control', 'public, s-maxage=31536000');
+
   // Add hostname to tags for granular revalidation
   const tags = [
     `host-${hostname}`,
-    `page-${pathname}`,
+    `page-${pathname}`, // TODO: replace path with slug
     `full-${hostname}${pathname}`
   ];
 
   response.headers.set('x-feathery-tags', tags.join(','));
-
-  // Cache for a long time since we'll use on-demand revalidation
-  response.headers.set('Cache-Control', 'public, s-maxage=31536000');
-
-  // Vary cache by hostname
   response.headers.append('Vary', 'x-feathery-tags');
   response.headers.append('Netlify-Vary', 'x-feathery-tags');
 

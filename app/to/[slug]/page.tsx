@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from 'next';
+import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 
 type Props = {
@@ -6,39 +6,31 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-// Make metadata static per host+slug combination
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const headersList = headers();
-  const host = headersList.get('host') || 'localhost:3000';
+  const host = headersList.get('host');
 
   return {
-    title: `${host} - ${params.slug}` // Remove dynamic date
+    title: `${host ?? 'none'} - ${params.slug}`
   };
 }
 
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-  themeColor: '#000000'
-};
-
-// Force the page to be treated as static
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic';
 
 export default async function Page({ params }: Props) {
-  console.log('Building Page', {
-    slug: params.slug
-  });
   const headersList = headers();
-  const host = headersList.get('host') || 'localhost:3000';
-
-  // Remove dynamic date, use a static timestamp if needed
+  const host = headersList.get('host');
+  console.log('Building Page', {
+    slug: params.slug,
+    host: host
+  });
+  const time = new Date().toLocaleTimeString();
   return (
     <div>
       <p>Proof of concept (2)</p>
-      <p>{`host=${host}`}</p>
+      <p>{`host=${host ?? 'none'}`}</p>
       <p>{`slug=${params.slug}`}</p>
+      <p>{`time=${time}`}</p>
     </div>
   );
 }
