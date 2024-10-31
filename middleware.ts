@@ -21,6 +21,7 @@ export function middleware(request: NextRequest) {
 
   // Vary cache by hostname
   response.headers.append('Vary', 'x-feathery-tags');
+  response.headers.append('Netlify-Vary', 'x-feathery-tags');
 
   return response;
 }
