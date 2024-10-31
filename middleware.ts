@@ -12,7 +12,11 @@ export function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
   // Add hostname to tags for granular revalidation
-  const tags = [`host-${hostname}`, `page-${pathname}`];
+  const tags = [
+    `host-${hostname}`,
+    `page-${pathname}`,
+    `full-${hostname}${pathname}`
+  ];
 
   response.headers.set('x-feathery-tags', tags.join(','));
 

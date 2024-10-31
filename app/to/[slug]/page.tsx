@@ -6,11 +6,16 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
+// Make metadata static per host+slug combination
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const headersList = headers();
+  const host = headersList.get('host') || 'localhost:3000';
+
   return {
-    title: `${new Date().toISOString()} - ${params.slug}`
+    title: `${host} - ${params.slug}` // Remove dynamic date
   };
 }
+
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
@@ -18,16 +23,20 @@ export const viewport: Viewport = {
   themeColor: '#000000'
 };
 
+// Force the page to be treated as static
+export const dynamic = 'force-static';
+
 export default async function Page({ params }: Props) {
   console.log('Building Page', {
     slug: params.slug
   });
   const headersList = headers();
   const host = headersList.get('host') || 'localhost:3000';
+
+  // Remove dynamic date, use a static timestamp if needed
   return (
     <div>
-      <p>Proof of concept</p>
-      <p>{`time=${new Date().toISOString()}`}</p>
+      <p>Proof of concept (2)</p>
       <p>{`host=${host}`}</p>
       <p>{`slug=${params.slug}`}</p>
     </div>
