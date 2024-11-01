@@ -38,11 +38,8 @@ export async function fetchMetadata(slug: string, site: string) {
     staging: 'https://staging.feathery.io',
     production: apiUrl
   };
-  // const env = (process.env.NEXT_PUBLIC_BACKEND_ENV ||
-  //   'production') as keyof typeof envApiUrls;
-  console.log('NEXT_PUBLIC_BACKEND_ENV', process.env.NEXT_PUBLIC_BACKEND_ENV);
-  console.log('BACKEND_ENV', process.env.BACKEND_ENV);
-  const env = 'staging';
+  const env = (process.env.NEXT_PUBLIC_BACKEND_ENV ||
+    'production') as keyof typeof envApiUrls;
   console.log('  Env:', env);
   console.log(
     '  Fetch:',
