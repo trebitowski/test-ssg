@@ -2,33 +2,33 @@ import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 
 export async function POST(request: NextRequest) {
-  const { slug, site } = await request.json();
+  let { slugs, domains } = await request.json();
 
-  if (!site || (Array.isArray(site) && site.length === 0)) {
+  if (!slugs || (Array.isArray(slugs) && slugs.length === 0)) {
     return NextResponse.json(
-      { message: 'Missing site parameter' },
+      { message: 'Missing slugs parameter' },
       { status: 400 }
     );
   }
 
-  if (!slug || (Array.isArray(slug) && slug.length === 0)) {
+  if (!domains || (Array.isArray(domains) && domains.length === 0)) {
     return NextResponse.json(
-      { message: 'Missing slug parameter' },
+      { message: 'Missing domains parameter' },
       { status: 400 }
     );
   }
 
   try {
-    const sites = Array.isArray(site) ? site : [site];
-    const slugs = Array.isArray(slug) ? slug : [slug];
+    domains = Array.isArray(domains) ? domains : [domains];
+    slugs = Array.isArray(slugs) ? slugs : [slugs];
 
-    for (const currentSite of sites) {
-      for (const currentSlug of slugs) {
-        const path = `/forms/${currentSite}/${currentSlug}`;
+    for (const domain of domains) {
+      for (const slug of slugs) {
+        const path = `/forms/${domain}/${slug}`;
         revalidatePath(path);
         console.log('API - revalidate');
-        console.log('  slug:', currentSlug);
-        console.log('  site:', currentSite);
+        console.log('  slug:', slug);
+        console.log('  domain:', domain);
         console.log('  path:', path);
       }
     }

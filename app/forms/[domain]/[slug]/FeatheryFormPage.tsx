@@ -7,7 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import FeatheryForm from './FeatheryForm';
 
 export type Props = {
-  site: string;
+  domain: string;
   slug: string;
   draft: boolean;
   useAuth: boolean;
@@ -16,7 +16,7 @@ export type Props = {
 };
 
 export default function FeatheryFormPage({
-  site,
+  domain,
   slug,
   draft = false,
   useAuth = false,
@@ -26,8 +26,8 @@ export default function FeatheryFormPage({
   const searchParams = useSearchParams();
   const parsedQueryParams = parseQueryParams(searchParams);
   const featheryOpts = featheryOptions(searchParams);
-  site = site.replaceAll('trebitowski.com', 'feathery.io');
-  const { region } = getRegionMeta(site);
+  domain = domain.replaceAll('trebitowski.com', 'feathery.io');
+  const { region } = getRegionMeta(domain);
 
   return (
     <>

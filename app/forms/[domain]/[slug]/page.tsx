@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
 type Props = {
-  params: { site: string; slug: string };
+  params: { domain: string; slug: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
@@ -27,7 +27,7 @@ const default_favicon = '/favicon.ico';
 const default_description = 'The most powerful no-code forms & workflows';
 const default_meta_image = 'https://form.trebitowski.com/featheryMetaImage.png';
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const result = await fetchMetadata(params.slug, params.site);
+  const result = await fetchMetadata(params.slug, params.domain);
   return {
     title: result.seoTitle,
     description: result.seoDescription || default_description,
@@ -49,26 +49,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function FormPage({ params }: Props) {
-  const site = params.site.replaceAll('trebitowski.com', 'feathery.io');
+  const domain = params.domain.replaceAll('trebitowski.com', 'feathery.io');
   const slug = params.slug;
-  const redirectData = checkForHostRedirect(site);
+  const redirectData = checkForHostRedirect(domain);
   console.log('Redirect Data:', redirectData);
   if (redirectData) {
     redirect(redirectData.redirect);
   }
-  const result = await fetchMetadata(slug, site);
+  const result = await fetchMetadata(slug, domain);
   console.log('Result:', result);
   if (result.redirect) {
     redirect(result.redirect);
   }
   console.log('Building Page', {
     slug: params.slug,
-    site: params.site
+    domain: params.domain
   });
 
   return (
     <Suspense>
-      <FeatheryFormPage slug={slug} site={site} {...(result as any)} />
+      <FeatheryFormPage slug={slug} domain={domain} {...(result as any)} />
     </Suspense>
   );
 }

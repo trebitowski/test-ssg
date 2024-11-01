@@ -1,27 +1,25 @@
 import { isLocal } from './helpers';
 import { getRegionMeta } from './regions';
 
-const ONE_WEEK_SECONDS = 7 * 24 * 60 * 60;
-
-export async function fetchMetadata(slug: string, site: string) {
-  site = site.replaceAll('trebitowski.com', 'feathery.io');
+export async function fetchMetadata(slug: string, domain: string) {
+  domain = domain.replaceAll('trebitowski.com', 'feathery.io');
   console.log('Fetch Metadata Execution:');
-  console.log('  Site:', site);
+  console.log('  Domain:', domain);
   console.log('  Slug:', slug);
 
-  const IS_LOCAL = isLocal(site);
+  const IS_LOCAL = isLocal(domain);
   console.log('  IS_LOCAL:', IS_LOCAL);
 
-  const customDomain = IS_LOCAL || site.endsWith('feathery.io') ? '' : site;
+  const customDomain = IS_LOCAL || domain.endsWith('feathery.io') ? '' : domain;
 
   console.log('  Custom Domain:', customDomain);
-  const { apiUrl } = getRegionMeta(site);
+  const { apiUrl } = getRegionMeta(domain);
   console.log('  API URL:', apiUrl);
   let orgSlug = 'form';
   console.log('  Org Slug:', orgSlug);
   if (!customDomain) {
     if (!IS_LOCAL) {
-      const domainParts = site.split('.');
+      const domainParts = domain.split('.');
       orgSlug = domainParts[0];
       // the new NextJS deployment is to hosted-form which is the same as the old form
       if (orgSlug === 'hosted-form') orgSlug = 'form';

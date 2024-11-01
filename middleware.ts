@@ -12,7 +12,7 @@ export function middleware(request: NextRequest) {
   }
 
   const url = request.nextUrl;
-  let site = request.headers.get('host') || '';
+  let domain = request.headers.get('host') || '';
 
   // Extract slug from various possible sources
   let slug = '';
@@ -28,7 +28,7 @@ export function middleware(request: NextRequest) {
     slug = 'null';
   }
 
-  const newPath = `/forms/${site}/${slug}`;
+  const newPath = `/forms/${domain}/${slug}`;
 
   const newUrl = new URL(newPath, url.origin);
 

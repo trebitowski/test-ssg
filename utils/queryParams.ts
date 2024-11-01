@@ -1,6 +1,6 @@
-// Slug and site is automatically included by NextJs in router.query so we need to ignore.
+// Slug and domain is automatically included by NextJs in router.query so we need to ignore.
 // The other keys are reserved for Feathery internal usage
-const IGNORE_QUERY_KEYS = ['slug', 'site', '_slug', '_locale', '_id', '_cid'];
+const IGNORE_QUERY_KEYS = ['slug', 'domain', '_slug', '_locale', '_id', '_cid'];
 
 const parseQueryParams = (queryParams: Record<string, any>) => {
   const filteredQueryParams = Object.keys(queryParams).filter(
