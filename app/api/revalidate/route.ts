@@ -1,39 +1,17 @@
-// app/api/revalidate/route.ts
-import { revalidateTag } from 'next/cache';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 
 export async function POST(request: NextRequest) {
+  const { slug, subdomain } = await request.json();
+
   try {
-    const { hostname, paths } = await request.json();
-
-    // Revalidate the hostname tag
-    if (hostname) {
-      await revalidateTag(`host-${hostname}`);
-    }
-
-    // Revalidate specific paths if provided
-    if (paths) {
-      if (Array.isArray(paths)) {
-        for (const path of paths) {
-          await revalidateTag(`page-${path}`);
-        }
-      } else {
-        await revalidateTag(`page-${paths}`);
-      }
-    }
-
-    return Response.json({
-      revalidated: true,
-      hostname,
-      paths,
-      date: Date.now()
-    });
+    const path = `/_forms/${subdomain}/${slug}`;
+    revalidatePath(path);
+    return NextResponse.json({ revalidated: true, now: Date.now() });
   } catch (err) {
-    return Response.json(
-      {
-        error: 'Error revalidating',
-        detail: err instanceof Error ? err.message : 'Unknown error'
-      },
+    console.error(err);
+    return NextResponse.json(
+      { message: 'Error revalidating' },
       { status: 500 }
     );
   }
