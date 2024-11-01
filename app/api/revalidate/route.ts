@@ -4,10 +4,17 @@ import { revalidatePath } from 'next/cache';
 export async function POST(request: NextRequest) {
   const { slug, subdomain } = await request.json();
 
+  const site = subdomain.replaceAll('.', '-');
   try {
-    const path = `/_forms/${subdomain}/${slug}`;
+    const path = `/_forms/${site}/${slug}`;
     revalidatePath(path);
-    return NextResponse.json({ revalidated: true, now: Date.now() });
+    return NextResponse.json({
+      revalidated: true,
+      site,
+      slug,
+      path,
+      now: Date.now()
+    });
   } catch (err) {
     console.error(err);
     return NextResponse.json(
