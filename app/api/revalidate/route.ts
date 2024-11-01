@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
 
   const site = subdomain.replaceAll('.', '-');
   try {
-    const path = `/_forms/${site}/${slug}`;
+    const path = `/forms/${site}/${slug}`;
     revalidatePath(path);
     return NextResponse.json({
       revalidated: true,
