@@ -1,4 +1,5 @@
 export const revalidate = false;
+export const dynamic = 'force-static';
 
 export async function generateMetadata({ params }: PageProps) {
   const { subdomain, slug } = params;
