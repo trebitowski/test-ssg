@@ -13,7 +13,6 @@ export function middleware(request: NextRequest) {
 
   const url = request.nextUrl;
   let site = request.headers.get('host') || '';
-  site = site.replaceAll('.', '-');
 
   // Extract slug from various possible sources
   let slug = '';

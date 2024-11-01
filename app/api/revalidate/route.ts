@@ -7,6 +7,11 @@ export async function POST(request: NextRequest) {
   try {
     const path = `/forms/${site}/${slug}`;
     revalidatePath(path);
+    console.log('API - revalidate');
+    console.log('  slug:', slug);
+    console.log('  site:', site);
+    console.log('  path:', path);
+
     return NextResponse.json({
       revalidated: true,
       now: Date.now()
