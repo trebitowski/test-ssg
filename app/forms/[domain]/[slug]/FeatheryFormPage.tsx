@@ -3,8 +3,8 @@
 import { featheryOptions } from '@/utils/helpers';
 import parseQueryParams from '@/utils/queryParams';
 import { getRegionMeta } from '@/utils/regions';
-import { useSearchParams } from 'next/navigation';
 import FeatheryForm from './FeatheryForm';
+import { useSearchParamsObject } from '@/utils/useSearchParamsObject';
 
 export type Props = {
   domain: string;
@@ -23,7 +23,7 @@ export default function FeatheryFormPage({
   sdkKey = '',
   customDomain = ''
 }: Props) {
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParamsObject();
   const parsedQueryParams = parseQueryParams(searchParams);
   const featheryOpts = featheryOptions(searchParams);
   domain = domain.replaceAll('trebitowski.com', 'feathery.io');
