@@ -36,6 +36,7 @@ export function middleware(request: NextRequest) {
     newUrl.searchParams.append(key, value);
   });
 
+  console.log('newUrl', newUrl);
   return NextResponse.rewrite(newUrl);
 }
 
