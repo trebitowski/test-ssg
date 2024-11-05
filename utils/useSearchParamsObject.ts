@@ -17,7 +17,7 @@ export function useSearchParamsObject<
     for (const [key, value] of entries) {
       if (key in params) {
         if (Array.isArray(params[key])) {
-          params[key].push(value);
+          (params[key] as string[]).push(value);
         } else {
           params[key] = [params[key] as string, value];
         }
