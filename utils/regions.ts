@@ -8,6 +8,8 @@ const hostRegionMap = {
   'cashcofinancial.feathery.io': CA,
   'weel.feathery.io': AUSTRALIA,
   'umlautsolutions.feathery.io': AUSTRALIA,
+  'dow.feathery.io': AUSTRALIA,
+  'investec.feathery.io': EU,
   'sympatient.feathery.io': EU,
   'eu-customsubdomain.feathery.io': EU, // test org 'eu-customsubdomain'
   'au-customsubdomain.feathery.io': AUSTRALIA // test org 'au-customsubdomain'

@@ -12,7 +12,10 @@ export function middleware(request: NextRequest) {
   }
 
   const url = request.nextUrl;
-  let domain = request.headers.get('host') || '';
+  const domainWithPort = request.headers.get('host') || '';
+  const domain = domainWithPort
+    .split(':')[0]
+    .replace('trebitowski.com', 'feathery.io');
 
   // Extract slug from various possible sources
   let slug = '';
@@ -36,7 +39,12 @@ export function middleware(request: NextRequest) {
     newUrl.searchParams.append(key, value);
   });
 
-  console.log('newUrl', newUrl);
+  console.log('MIDDLEWARE - rewrite');
+  console.log('  slug:', slug);
+  console.log('  domain:', domain);
+  console.log('  path:', newPath);
+  console.log('  url:', newUrl.href);
+
   return NextResponse.rewrite(newUrl);
 }
 

@@ -24,13 +24,11 @@ export default function FeatheryFormPage({
   customDomain = ''
 }: Props) {
   const searchParams = useSearchParamsObject();
+
   const parsedQueryParams = parseQueryParams(searchParams);
   const featheryOpts = featheryOptions(searchParams);
-  domain = domain.replaceAll('trebitowski.com', 'feathery.io');
   const { region } = getRegionMeta(domain);
 
-  console.log('searchParams', searchParams);
-  console.log('parsedQueryParams', parsedQueryParams);
   return (
     <>
       {slug && (

@@ -1,31 +1,22 @@
 import { isLocal } from './helpers';
 import { getRegionMeta } from './regions';
 
-export async function fetchMetadata(slug: string, domain: string) {
-  domain = domain.replaceAll('trebitowski.com', 'feathery.io');
-  console.log('Fetch Metadata Execution:');
-  console.log('  Domain:', domain);
-  console.log('  Slug:', slug);
+const ONE_WEEK_SECONDS = 7 * 24 * 60 * 60;
 
-  const IS_LOCAL = isLocal(domain);
-  console.log('  IS_LOCAL:', IS_LOCAL);
+export async function fetchMetadata(slug: string, site: string) {
+  const IS_LOCAL = isLocal(site);
 
-  const customDomain = IS_LOCAL || domain.endsWith('feathery.io') ? '' : domain;
+  const customDomain = IS_LOCAL || site.endsWith('feathery.io') ? '' : site;
 
-  console.log('  Custom Domain:', customDomain);
-  const { apiUrl } = getRegionMeta(domain);
-  console.log('  API URL:', apiUrl);
+  const { apiUrl } = getRegionMeta(site);
   let orgSlug = 'form';
-  console.log('  Org Slug:', orgSlug);
   if (!customDomain) {
     if (!IS_LOCAL) {
-      const domainParts = domain.split('.');
+      const domainParts = site.split('.');
       orgSlug = domainParts[0];
       // the new NextJS deployment is to hosted-form which is the same as the old form
       if (orgSlug === 'hosted-form') orgSlug = 'form';
-      console.log('  Org Slug:', orgSlug);
     } else if (!slug) {
-      console.log('  Action: Redirecting to Feathery homepage');
       // IF at form.feathery.io with no slug, won't be able to fetch a form
       return { redirect: 'https://feathery.io' };
     }
@@ -38,22 +29,24 @@ export async function fetchMetadata(slug: string, domain: string) {
   };
   const env = (process.env.NEXT_PUBLIC_BACKEND_ENV ||
     'production') as keyof typeof envApiUrls;
-  console.log('  Env:', env);
-  console.log(
-    '  Fetch:',
-    `${envApiUrls[env]}/api/panel/slug/${orgSlug}/${slug}/?custom_domain=${customDomain}`
-  );
   const response = await fetch(
-    `${envApiUrls[env]}/api/panel/slug/${orgSlug}/${slug}/?custom_domain=${customDomain}`
+    `${envApiUrls[env]}/api/panel/slug/${orgSlug}/${
+      slug || ''
+    }/?custom_domain=${customDomain}`,
+    {
+      next: {
+        tags: [`${site}-${slug || 'null'}`],
+        revalidate: ONE_WEEK_SECONDS
+      }
+    }
   );
-  console.log('  Response:', response);
   if (response.status === 404) {
     if (orgSlug === 'form') return { redirect: 'https://feathery.io' };
   } else {
     const {
       sdk_key: sdkKey,
       form_name: formName,
-      form_slug: panelSlug,
+      form_slug: slug,
       seo_title: seoTitle,
       seo_description: seoDescription,
       seo_image: seoMetaImage,
@@ -63,9 +56,8 @@ export async function fetchMetadata(slug: string, domain: string) {
     } = await response.json();
 
     return {
-      timestamp: new Date().toISOString(),
       formName,
-      panelSlug,
+      slug,
       draft,
       favicon,
       sdkKey,

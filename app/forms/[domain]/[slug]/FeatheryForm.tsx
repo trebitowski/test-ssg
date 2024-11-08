@@ -43,7 +43,6 @@ const FeatheryForm = ({
     _draft: draft
   };
 
-  console.log('props', props);
   return useAuth ? (
     <LoginForm formProps={props} _featheryHosted={!!customDomain} />
   ) : (
